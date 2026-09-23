@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Witcher - Hunter's Journal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background:
+                radial-gradient(circle at top, #30352f 0%, #151816 35%, #080909 100%);
+            color: #ddd;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 35px 35px;
+        }
+
+        .topbar {
+            height: 72px;
+            background: rgba(8, 10, 9, 0.92);
+            border-bottom: 1px solid #6d6b4e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #d5c56b;
+            font-size: 23px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .wolf {
+            width: 43px;
+            height: 43px;
+            border: 2px solid #b8aa5d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 0 18px rgba(205, 190, 88, 0.25);
+        }
+
+        .top-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .top-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .top-links a:hover {
+            color: #d6c66d;
+        }
+
+        .layout {
+            max-width: 1450px;
+            margin: auto;
+            padding: 35px;
+            display: grid;
+            grid-template-columns: 260px 1fr 310px;
+            gap: 25px;
+        }
+
+        .panel {
+            background:
+                linear-gradient(145deg, rgba(46, 49, 43, 0.82), rgba(14, 16, 15, 0.92));
+            border: 1px solid rgba(173, 163, 91, 0.4);
+            box-shadow:
+                inset 0 0 25px rgba(0,0,0,0.35),
+                0 15px 40px rgba(0,0,0,0.4);
+            backdrop-filter: blur(12px);
+        }
+
+        .sidebar {
+            padding: 25px 20px;
+            min-height: 750px;
+        }
+
+        .profile {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #48483d;
+        }
+
+        .profile-icon {
+            width: 95px;
+            height: 95px;
+            margin: auto;
+            border-radius: 50%;
+            border: 2px solid #a99b57;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            background: radial-gradient(circle, #4d5147, #111);
+            box-shadow: 0 0 25px rgba(201, 185, 80, 0.18);
+        }
+
+        .profile h2 {
+            color: #d8c96e;
+            margin-top: 15px;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        .profile p {
+            color: #888;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .level {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #b6b6a8;
+        }
+
+        .xp {
+            height: 5px;
+            background: #252824;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .xp span {
+            display: block;
+            height: 100%;
+            width: 72%;
+            background: #b5a653;
+        }
+
+        .menu {
+            margin-top: 25px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 14px 12px;
+            color: #999;
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            transition: 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .menu a:hover {
+            color: #dfd17b;
+            background: rgba(210, 193, 92, 0.07);
+            border-left-color: #b7a755;
+            padding-left: 18px;
+        }
+
+        .center {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .hero {
+            min-height: 220px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(8,10,9,0.95), rgba(15,18,15,0.72)),
+                radial-gradient(circle at right, #52584c, #141715);
+        }
+
+        .hero::after {
+            content: "⚔";
+            position: absolute;
+            right: 35px;
+            top: 30px;
+            font-size: 150px;
+            color: rgba(208, 193, 96, 0.07);
+            transform: rotate(18deg);
+        }
+
+        .eyebrow {
+            color: #a99b55;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 4px;
+        }
+
+        .hero h1 {
+            font-size: 43px;
+            color: #e1d58a;
+            margin: 12px 0;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            color: #aaa;
+            max-width: 620px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .location {
+            margin-top: 22px;
+            color: #8f8d76;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stat {
+            padding: 18px;
+        }
+
+        .stat-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .bar {
+            height: 9px;
+            background: #171a17;
+            border: 1px solid #30342e;
+        }
+
+        .bar span {
+            display: block;
+            height: 100%;
+        }
+
+        .health span {
+            width: 82%;
+            background: #8f302e;
+        }
+
+        .stamina span {
+            width: 67%;
+            background: #c3aa43;
+        }
+
+        .toxicity span {
+            width: 28%;
+            background: #5e8e45;
+        }
+
+        .section-title {
+            color: #d1c36d;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .quests {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .quest {
+            padding: 20px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .quest:hover {
+            transform: translateY(-4px);
+            border-color: #c2b15e;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .quest-type {
+            color: #8e8a69;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .quest h3 {
+            color: #ddd6a0;
+            margin: 8px 0;
+            font-size: 18px;
+        }
+
+        .quest p {
+            color: #8e8e88;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .quest-footer {
+            margin-top: 17px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #777;
+        }
+
+        .reward {
+            color: #c9b85c;
+        }
+
+        .map {
+            height: 260px;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 20% 70%, rgba(196,180,90,0.08) 0 2px, transparent 3px),
+                radial-gradient(circle at 70% 25%, rgba(196,180,90,0.08) 0 2px, transparent 3px),
+                linear-gradient(135deg, #20251f, #111411);
+        }
+
+        .map::before {
+            content: "";
+            position: absolute;
+            inset: 20px;
+            border: 1px dashed #555844;
+            transform: rotate(-4deg);
+        }
+
+        .road {
+            position: absolute;
+            width: 80%;
+            height: 2px;
+            background: #6d6d5a;
+            top: 55%;
+            left: 10%;
+            transform: rotate(-15deg);
+            box-shadow: 0 0 4px #888;
+        }
+
+        .road.two {
+            top: 35%;
+            transform: rotate(32deg);
+        }
+
+        .map-point {
+            position: absolute;
+            color: #d6c669;
+            font-size: 22px;
+            text-shadow: 0 0 10px #000;
+        }
+
+        .point-one {
+            top: 45%;
+            left: 27%;
+        }
+
+        .point-two {
+            top: 25%;
+            right: 22%;
+        }
+
+        .point-three {
+            bottom: 20%;
+            right: 35%;
+        }
+
+        .map-label {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            color: #888a78;
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+
+        .rightbar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-panel {
+            padding: 22px;
+        }
+
+        .inventory {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .item {
+            height: 70px;
+            border: 1px solid #46483c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            background: rgba(255,255,255,0.02);
+            transition: 0.3s;
+        }
+
+        .item:hover {
+            border-color: #c9b85f;
+            transform: scale(1.05);
+            background: rgba(194,177,81,0.08);
+        }
+
+        .item small {
+            display: none;
+        }
+
+        .switch-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 0;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            width: 48px;
+            height: 24px;
+            background: #292c28;
+            border: 1px solid #595b4a;
+            display: block;
+            border-radius: 20px;
+            padding: 3px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .slider::after {
+            content: "";
+            display: block;
+            width: 16px;
+            height: 16px;
+            background: #777;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .switch input:checked + .slider {
+            background: #655d2e;
+            border-color: #c6b65f;
+        }
+
+        .switch input:checked + .slider::after {
+            transform: translateX(23px);
+            background: #e0d17c;
+        }
+
+        details {
+            border-top: 1px solid #3b3d35;
+            padding: 13px 0;
+        }
+
+        summary {
+            cursor: pointer;
+            color: #bbb;
+            font-size: 13px;
+            list-style: none;
+        }
+
+        summary::before {
+            content: "+";
+            color: #c5b65f;
+            margin-right: 10px;
+        }
+
+        details[open] summary::before {
+            content: "−";
+        }
+
+        details p {
+            color: #777;
+            font-size: 12px;
+            line-height: 1.6;
+            padding: 12px 20px;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            background: #0c0d0c;
+            color: #ddd18a;
+            border: 1px solid #67613d;
+            padding: 7px 10px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s;
+            z-index: 5;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .open-modal {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #d8ca6e;
+            border: 1px solid #70683e;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .open-modal:hover {
+            background: rgba(203,187,91,0.1);
+            border-color: #c7b760;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 50;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal:target {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            width: min(550px, 90%);
+            padding: 35px;
+            background:
+                linear-gradient(145deg, #292c27, #111311);
+            border: 1px solid #8d8248;
+            box-shadow: 0 25px 80px #000;
+            position: relative;
+        }
+
+        .modal-box h2 {
+            color: #d8ca6d;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .modal-box p {
+            color: #999;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .close {
+            position: absolute;
+            right: 18px;
+            top: 15px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 22px;
+        }
+
+        .footer {
+            max-width: 1450px;
+            margin: auto;
+            padding: 0 35px 30px;
+            text-align: center;
+            color: #56584e;
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 1100px) {
+            .layout {
+                grid-template-columns: 220px 1fr;
+            }
+
+            .rightbar {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .top-links {
+                display: none;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+                padding: 18px;
+            }
+
+            .sidebar {
+                min-height: auto;
+            }
+
+            .rightbar {
+                grid-column: auto;
+                display: flex;
+            }
+
+            .quests {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="logo">
+            <div class="wolf">🐺</div>
+            Witcher Journal
+        </div>
+
+        <nav class="top-links">
+            <a href="#">MAP</a>
+            <a href="#">QUESTS</a>
+            <a href="#">INVENTORY</a>
+            <a href="#">BESTIARY</a>
+        </nav>
+    </header>
+
+    <main class="layout">
+
+        <aside class="sidebar panel">
+
+            <div class="profile">
+                <div class="profile-icon">⚔</div>
+                <h2>GERALT</h2>
+                <p>WHITE WOLF</p>
+
+                <div class="level">
+                    LEVEL 31
+                    <div class="xp">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="menu">
+                <a href="#">⚔ Character</a>
+                <a href="#">📜 Quests</a>
+                <a href="#">🗺 World Map</a>
+                <a href="#">🧪 Inventory</a>
+                <a href="#">🐺 Bestiary</a>
+                <a href="#">✦ Signs</a>
+                <a href="#">⚙ Settings</a>
+            </nav>
+
+        </aside>
+
+        <section class="center">
+
+            <div class="hero panel">
+
+                <div class="eyebrow">Current Location</div>
+
+                <h1>THE WILD HUNT</h1>
+
+                <p>
+                    The northern winds carry whispers of monsters,
+                    ancient magic and forgotten kingdoms. Your path
+                    leads through forests where something unnatural
+                    has begun hunting the hunters.
+                </p>
+
+                <div class="location">
+                    VELEN • NO MAN'S LAND • 22:47
+                </div>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat panel">
+                    <div class="stat-title">
+                        <span>HEALTH</span>
+                        <span>82%</span>
+                    </div>
+                    <div class="bar health">
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="stat panel">
+                    <div class="stat-title">
+                        <span>STAMINA</span>
+                        <span>67%</span>
+                    </div>
+                    <div class="bar stamina">
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="stat panel">
+                    <div class="stat-title">
+                        <span>TOXICITY</span>
+                        <span>28%</span>
+                    </div>
+                    <div class="bar toxicity">
+                        <span></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div>
+                <div class="section-title">Active Quests</div>
+
+                <div class="quests">
+
+                    <div class="quest panel">
+                        <div class="quest-type">MAIN QUEST</div>
+                        <h3>The Isle of Mists</h3>
+                        <p>
+                            Follow the trail and search for clues
+                            concerning the missing sorceress.
+                        </p>
+
+                        <div class="quest-footer">
+                            <span>LEVEL 30</span>
+                            <span class="reward">500 XP</span>
+                        </div>
+                    </div>
+
+                    <div class="quest panel">
+                        <div class="quest-type">WITCHER CONTRACT</div>
+                        <h3>The Beast of the Swamp</h3>
+                        <p>
+                            Villagers claim that something has been
+                            stalking travelers after sunset.
+                        </p>
+
+                        <div class="quest-footer">
+                            <span>LEVEL 28</span>
+                            <span class="reward">250 XP</span>
+                        </div>
+                    </div>
+
+                    <div class="quest panel">
+                        <div class="quest-type">TREASURE HUNT</div>
+                        <h3>Forgotten Wolf School Gear</h3>
+                        <p>
+                            An old map points toward ruins hidden
+                            beyond the abandoned watchtower.
+                        </p>
+
+                        <div class="quest-footer">
+                            <span>LEVEL 29</span>
+                            <span class="reward">Gear</span>
+                        </div>
+                    </div>
+
+                    <div class="quest panel">
+                        <div class="quest-type">SIDE QUEST</div>
+                        <h3>A Dangerous Proposition</h3>
+                        <p>
+                            A merchant needs help dealing with
+                            creatures blocking the northern road.
+                        </p>
+
+                        <div class="quest-footer">
+                            <span>LEVEL 26</span>
+                            <span class="reward">300 XP</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="map panel">
+
+                <div class="road"></div>
+                <div class="road two"></div>
+
+                <div class="map-point point-one tooltip"
+                     data-tooltip="Current Location">⚔</div>
+
+                <div class="map-point point-two tooltip"
+                     data-tooltip="Quest Location">◆</div>
+
+                <div class="map-point point-three tooltip"
+                     data-tooltip="Monster Nest">☠</div>
+
+                <div class="map-label">
+                    VELEN REGION — EXPLORATION MAP
+                </div>
+
+            </div>
+
+        </section>
+
+        <aside class="rightbar">
+
+            <div class="right-panel panel">
+
+                <div class="section-title">Inventory</div>
+
+                <div class="inventory">
+
+                    <div class="item tooltip" data-tooltip="Swallow">🧪</div>
+                    <div class="item tooltip" data-tooltip="Thunderbolt">⚗</div>
+                    <div class="item tooltip" data-tooltip="Cat">🌑</div>
+                    <div class="item tooltip" data-tooltip="White Honey">🍶</div>
+                    <div class="item tooltip" data-tooltip="Bomb">💣</div>
+                    <div class="item tooltip" data-tooltip="Food">🍖</div>
+
+                </div>
+
+            </div>
+
+            <div class="right-panel panel">
+
+                <div class="section-title">Game Settings</div>
+
+                <div class="switch-row">
+                    <span>Witcher Senses</span>
+
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="switch-row">
+                    <span>Night Vision</span>
+
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="switch-row">
+                    <span>Enemy Health</span>
+
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="switch-row">
+                    <span>Music</span>
+
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="right-panel panel">
+
+                <div class="section-title">Signs</div>
+
+                <details>
+                    <summary>Igni</summary>
+                    <p>
+                        A fire sign capable of burning enemies and
+                        igniting objects in the environment.
+                    </p>
+                </details>
+
+                <details>
+                    <summary>Aard</summary>
+                    <p>
+                        A telekinetic blast capable of knocking
+                        enemies off balance.
+                    </p>
+                </details>
+
+                <details>
+                    <summary>Quen</summary>
+                    <p>
+                        A protective magical shield that absorbs
+                        incoming damage.
+                    </p>
+                </details>
+
+                <details>
+                    <summary>Yrden</summary>
+                    <p>
+                        A magical trap designed to slow supernatural
+                        creatures.
+                    </p>
+                </details>
+
+            </div>
+
+            <div class="right-panel panel">
+
+                <div class="section-title">Journal Entry</div>
+
+                <p style="color:#888; font-size:12px; line-height:1.7;">
+                    "The trail ends near the old forest. Tracks suggest
+                    something large passed through here recently."
+                </p>
+
+                <a href="#journal" class="open-modal">
+                    READ FULL ENTRY
+                </a>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+    <div class="footer">
+        THE CONTINENT • WITCHER JOURNAL INTERFACE
+    </div>
+
+    <div id="journal" class="modal">
+
+        <div class="modal-box">
+
+            <a href="#" class="close">×</a>
+
+            <h2>OLD FOREST — JOURNAL</h2>
+
+            <p>
+                The forest grows darker with every step. No birds sing
+                here, and even the wind seems reluctant to pass between
+                the trees.
+                <br><br>
+                Tracks disappear near an abandoned stone altar.
+                Whatever left them was large, heavy and moving quickly.
+                <br><br>
+                Silver sword ready. Potions prepared. Time to investigate.
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
