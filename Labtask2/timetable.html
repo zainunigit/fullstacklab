@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Class Timetable</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            padding: 10px 5px;
+            border: 1px solid #ccc;
+        }
+
+        td {
+            border: 1px solid #ccc;
+            padding: 10px 5px;
+            height: 45px;
+        }
+
+        .class-time {
+            background-color: #d4edda;
+            font-weight: bold;
+            color: #006b35;
+        }
+
+        .subject {
+            width: 180px;
+        }
+
+        .faculty {
+            width: 130px;
+        }
+
+        .sr {
+            width: 40px;
+        }
+
+        .day {
+            width: 90px;
+        }
+
+        .cr {
+            width: 60px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="table-container">
+
+<table>
+
+    <thead>
+        <tr>
+            <th class="sr">Sr#</th>
+            <th class="subject">Subject Name</th>
+            <th class="faculty">Faculty Name</th>
+            <th class="day">Monday</th>
+            <th class="day">Tuesday</th>
+            <th class="day">Wednesday</th>
+            <th class="day">Thursday</th>
+            <th class="day">Friday</th>
+            <th class="day">Saturday</th>
+            <th class="day">Sunday</th>
+            <th class="cr">Cr.Hrs</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <tr>
+            <td>1</td>
+            <td>F-26-Advisory Class-<br>485</td>
+            <td>Ms. Karnwal<br>Ejaz</td>
+            <td></td>
+            <td class="class-time">14:00 -<br>14:50</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>0</td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>F-26-Artificial<br>Intelligence-483</td>
+            <td>Ms. Karnwal<br>Ejaz</td>
+            <td></td>
+            <td></td>
+            <td class="class-time">14:00 -<br>14:50</td>
+            <td class="class-time">14:00 -<br>14:50</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>2</td>
+        </tr>
+
+        <tr>
+            <td>3</td>
+            <td>F-26-Artificial<br>Intelligence Lab-484</td>
+            <td>Ms. Karnwal<br>Ejaz</td>
+            <td class="class-time">11:00 -<br>13:40</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="class-time">11:00 -<br>13:40</td>
+            <td></td>
+            <td>1</td>
+        </tr>
+
+        <tr>
+            <td>4</td>
+            <td>F-26-Design and<br>Analysis<br>Algorithms-479</td>
+            <td>Dr. Mehdi<br>Hassan</td>
+            <td></td>
+            <td></td>
+            <td class="class-time">09:00 -<br>10:20</td>
+            <td class="class-time">09:00 -<br>10:20</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>3</td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>F-26-Full Stack Web<br>Development-486</td>
+            <td>Mr. Hafiz<br>Obaidullah<br>Khan</td>
+            <td class="class-time">09:00 -<br>09:50</td>
+            <td class="class-time">09:00 -<br>09:50</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="class-time">09:00 -<br>09:50</td>
+            <td></td>
+            <td>2</td>
+        </tr>
+
+        <tr>
+            <td>6</td>
+            <td>F-26-Full Stack Web<br>Development Lab-487</td>
+            <td>Mr. Hafiz<br>Obaidullah<br>Khan</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="class-time">11:00 -<br>13:40</td>
+            <td></td>
+            <td></td>
+            <td>1</td>
+        </tr>
+
+        <tr>
+            <td>7</td>
+            <td>F-26-Introduction to<br>Management-478</td>
+            <td>Ms. Ayesha<br>Munir</td>
+            <td></td>
+            <td class="class-time">10:00 -<br>10:50</td>
+            <td></td>
+            <td></td>
+            <td class="class-time">09:00 -<br>09:50</td>
+            <td></td>
+            <td></td>
+            <td>2</td>
+        </tr>
+
+        <tr>
+            <td>8</td>
+            <td>F-26-Linear Algebra-<br>482</td>
+            <td>Dr. Waqas<br>Sarwar Abbasi</td>
+            <td class="class-time">10:00 -<br>10:50</td>
+            <td class="class-time">13:00 -<br>13:50</td>
+            <td></td>
+            <td></td>
+            <td class="class-time">10:00 -<br>10:50</td>
+            <td class="class-time">10:00 -<br>10:50</td>
+            <td></td>
+            <td>3</td>
+        </tr>
+
+        <tr>
+            <td>9</td>
+            <td>F-26-Operating<br>Systems-480</td>
+            <td>Ms. Warda<br>Aslam</td>
+            <td class="class-time">14:00 -<br>14:50</td>
+            <td class="class-time">08:00 -<br>08:50</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="class-time">14:00 -<br>14:50</td>
+            <td></td>
+            <td>2</td>
+        </tr>
+
+        <tr>
+            <td>10</td>
+            <td>F-26-Operating<br>Systems Lab-481</td>
+            <td>Ms. Warda<br>Aslam</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="class-time">11:00 -<br>13:40</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1</td>
+        </tr>
+
+    </tbody>
+
+</table>
+
+</div>
+
+</body>
+</html>
