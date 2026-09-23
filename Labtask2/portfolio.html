@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zain Raza - Portfolio</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eeeeee;
+            color: #333;
+        }
+
+        .container {
+            width: 850px;
+            min-height: 1100px;
+            margin: 30px auto;
+            background-color: white;
+            display: grid;
+            grid-template-columns: 32% 68%;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        .left {
+            background-color: #292c36;
+            color: white;
+            padding: 30px 25px;
+        }
+
+        .right {
+            padding: 40px 35px;
+            background-color: white;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile h1 {
+            font-size: 30px;
+            letter-spacing: 3px;
+            font-weight: normal;
+        }
+
+        .profile h2 {
+            color: #c49b5c;
+            font-size: 30px;
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+
+        .profile p {
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            color: #ddd;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #c49b5c;
+            font-size: 13px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .section p {
+            font-size: 11px;
+            line-height: 1.7;
+            color: #ddd;
+        }
+
+        .contact-item {
+            margin-bottom: 10px;
+            font-size: 11px;
+            color: #ddd;
+        }
+
+        .education-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .education-text {
+            font-size: 10px;
+            line-height: 1.5;
+            color: #ccc;
+        }
+
+        .skill {
+            margin-bottom: 12px;
+        }
+
+        .skill-name {
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .skill-bar {
+            height: 5px;
+            background-color: #555;
+        }
+
+        .skill-level {
+            height: 5px;
+            background-color: #c49b5c;
+        }
+
+        .certificate {
+            font-size: 11px;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        .name {
+            font-size: 34px;
+            letter-spacing: 4px;
+            color: #555;
+            font-weight: normal;
+        }
+
+        .name span {
+            color: #c49b5c;
+            font-weight: bold;
+        }
+
+        .job-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            color: #444;
+        }
+
+        .right-section {
+            margin-top: 35px;
+        }
+
+        .right-title {
+            color: #c49b5c;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .right-section p {
+            font-size: 11px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .experience {
+            margin-bottom: 25px;
+        }
+
+        .experience h3 {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .experience .date {
+            color: #c49b5c;
+            font-size: 10px;
+            margin-bottom: 8px;
+        }
+
+        .experience p {
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .project {
+            margin-bottom: 20px;
+        }
+
+        .project h3 {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .project p {
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .info-list {
+            padding-left: 18px;
+        }
+
+        .info-list li {
+            font-size: 11px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left {
+                text-align: left;
+            }
+
+            .profile {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="left">
+
+            <div class="profile">
+                <h1>ZAIN</h1>
+                <h2>RAZA</h2>
+                <p>COMPUTER SCIENCE STUDENT</p>
+            </div>
+
+            <div class="section">
+                <div class="section-title">CONTACT</div>
+
+                <div class="contact-item">+92 3195348970</div>
+                <div class="contact-item">✉ zainraza@email.com</div>
+                <div class="contact-item">📍 Islamabad, Pakistan</div>
+                <div class="contact-item">🔗 linkedin.com/in/zainraza</div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">EDUCATION</div>
+
+                <div class="education-title">
+                    B.S. IN COMPUTER SCIENCE
+                </div>
+
+                <div class="education-text">
+                    Air University<br>
+                    Islamabad, Pakistan<br>
+                    CGPA: 3.5 / 4.0
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">SKILLS</div>
+
+                <div class="skill">
+                    <div class="skill-name">Cyber Security</div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 80%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill">
+                    <div class="skill-name">Full Stack Development</div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 85%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill">
+                    <div class="skill-name">Artificial Intelligence</div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 75%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill">
+                    <div class="skill-name">HTML & CSS</div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 90%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill">
+                    <div class="skill-name">Python</div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">CERTIFICATES</div>
+
+                <div class="certificate">
+                    Microsoft Azure Fundamentals
+                </div>
+
+                <div class="certificate">
+                    Azure Cloud Computing Certificate
+                </div>
+            </div>
+
+        </div>
+
+        <div class="right">
+
+            <h1 class="name">
+                ZAIN <span>RAZA</span>
+            </h1>
+
+            <div class="job-title">
+                COMPUTER SCIENCE STUDENT
+            </div>
+
+            <div class="right-section">
+
+                <div class="right-title">
+                    PROFESSIONAL SUMMARY
+                </div>
+
+                <p>
+                    Computer Science student at Air University with a strong
+                    interest in software development, artificial intelligence,
+                    cyber security and modern web technologies. Interested in
+                    building practical software solutions and learning new
+                    technologies through real-world projects and internships.
+                </p>
+
+            </div>
+
+            <div class="right-section">
+
+                <div class="right-title">
+                    PROFESSIONAL EXPERIENCE
+                </div>
+
+                <div class="experience">
+
+                    <h3>Software Development Intern</h3>
+
+                    <div class="date">
+                        Summer 2026
+                    </div>
+
+                    <p>
+                        Worked as a software development intern at a software
+                        company. Assisted the development team in working on a
+                        Customer Relationship Management (CRM) system.
+                    </p>
+
+                    <p>
+                        Contributed to basic front-end development, database
+                        management and testing. Worked with the team to improve
+                        existing features and understand software development
+                        workflows.
+                    </p>
+
+                </div>
+
+                <div class="experience">
+
+                    <h3>Student Web Development Projects</h3>
+
+                    <div class="date">
+                        2025 - 2026
+                    </div>
+
+                    <p>
+                        Developed academic and personal projects using HTML,
+                        CSS, Python and other programming technologies.
+                        Practiced responsive web design and basic full-stack
+                        development concepts.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="right-section">
+
+                <div class="right-title">
+                    PROJECTS
+                </div>
+
+                <div class="project">
+
+                    <h3>CRM Management System</h3>
+
+                    <p>
+                        Worked with a development team on a CRM system during
+                        summer internship. The system was designed to help
+                        manage customers, records and business information.
+                    </p>
+
+                </div>
+
+                <div class="project">
+
+                    <h3>Web Development Projects</h3>
+
+                    <p>
+                        Created simple responsive websites using HTML and CSS,
+                        focusing on clean layouts, forms, navigation bars and
+                        user-friendly interfaces.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="right-section">
+
+                <div class="right-title">
+                    AREAS OF INTEREST
+                </div>
+
+                <ul class="info-list">
+                    <li>Artificial Intelligence</li>
+                    <li>Cyber Security</li>
+                    <li>Full Stack Web Development</li>
+                    <li>Cloud Computing</li>
+                    <li>Software Development</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
