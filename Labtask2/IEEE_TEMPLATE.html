@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE Conference Paper</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 0;
+            background: #d9d9d9;
+            font-family: "Times New Roman", Times, serif;
+            color: #000;
+        }
+
+        .paper {
+            width: 8.5in;
+            min-height: 11in;
+            margin: auto;
+            background: white;
+            padding: 0.75in 0.625in 1in 0.625in;
+        }
+
+        .copyright {
+            font-size: 8pt;
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24pt;
+            font-weight: bold;
+            line-height: 1.1;
+            margin-bottom: 22px;
+        }
+
+        .authors {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .author {
+            font-size: 10pt;
+            line-height: 1.35;
+            padding: 0 8px;
+        }
+
+        .author-name {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .abstract {
+            font-size: 9pt;
+            line-height: 1.15;
+            text-align: justify;
+            margin-bottom: 8px;
+        }
+
+        .abstract-title {
+            font-weight: bold;
+        }
+
+        .keywords {
+            font-size: 9pt;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .paper-columns {
+            column-count: 2;
+            column-gap: 0.25in;
+            column-fill: auto;
+            font-size: 10pt;
+            line-height: 1.15;
+            text-align: justify;
+        }
+
+        .section {
+            break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .subsection-title {
+            font-size: 10pt;
+            font-weight: bold;
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        p {
+            margin: 0 0 6px 0;
+        }
+
+        .figure {
+            width: 100%;
+            height: 115px;
+            border: 1px solid #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px 0 3px 0;
+            font-size: 10pt;
+        }
+
+        .figure-caption {
+            text-align: center;
+            font-size: 8pt;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0 3px 0;
+            font-size: 8pt;
+        }
+
+        th,
+        td {
+            border: 1px solid #555;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .table-caption {
+            text-align: center;
+            font-size: 8pt;
+            margin-bottom: 8px;
+        }
+
+        .equation {
+            text-align: center;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .references {
+            text-align: left;
+        }
+
+        .reference {
+            margin-bottom: 5px;
+            padding-left: 18px;
+            text-indent: -18px;
+            font-size: 8pt;
+            line-height: 1.15;
+        }
+
+        .acknowledgment {
+            text-align: justify;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .paper {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 10px;
+            }
+
+            .paper {
+                width: 100%;
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .authors {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .paper-columns {
+                column-count: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="paper">
+
+    <div class="copyright">
+        2026 International Conference on Computer Science and Technology
+    </div>
+
+    <div class="title">
+        A Simple Study of Modern Web Technologies
+    </div>
+
+    <div class="authors">
+
+        <div class="author">
+            <div class="author-name">Zain Raza</div>
+            Department of Computer Science<br>
+            Air University<br>
+            Islamabad, Pakistan<br>
+            zainraza@email.com
+        </div>
+
+        <div class="author">
+            <div class="author-name">Abdullah</div>
+            Department of Computer Science<br>
+            Air University<br>
+            Islamabad, Pakistan<br>
+            abdullah@email.com
+        </div>
+
+        <div class="author">
+            <div class="author-name">Ali Kazmi</div>
+            Department of Computer Science<br>
+            Air University<br>
+            Islamabad, Pakistan<br>
+            ali.kazmi@email.com
+        </div>
+
+    </div>
+
+    <div class="abstract">
+        <span class="abstract-title">Abstract—</span>
+        This paper presents an overview of modern web development
+        technologies and their role in creating structured, responsive,
+        and user-friendly websites. The study focuses on fundamental
+        technologies including HyperText Markup Language and Cascading
+        Style Sheets. The paper also discusses basic development
+        practices and responsive design techniques used in modern
+        web applications.
+    </div>
+
+    <div class="keywords">
+        <strong>Index Terms—</strong>
+        HTML, CSS, Web Development, Responsive Design, Web Technologies.
+    </div>
+
+    <div class="paper-columns">
+
+        <div class="section">
+
+            <div class="section-title">
+                I. INTRODUCTION
+            </div>
+
+            <p>
+                Web development has become an important area of modern
+                software engineering. Websites and web applications are
+                widely used in education, business, communication,
+                entertainment, and information systems.
+            </p>
+
+            <p>
+                The development of a website generally begins with
+                defining its structure and organizing its content.
+                HyperText Markup Language provides the basic structure,
+                while Cascading Style Sheets are used to control the
+                appearance and layout of the webpage.
+            </p>
+
+            <p>
+                The objective of this paper is to provide a basic
+                understanding of commonly used web technologies and
+                demonstrate how they can be combined to create a simple
+                responsive interface.
+            </p>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                II. RELATED WORK
+            </div>
+
+            <p>
+                Previous work in web development has focused on improving
+                website usability, accessibility, responsiveness, and
+                performance. Modern web development practices allow
+                developers to create interfaces that operate across
+                different screen sizes and devices.
+            </p>
+
+            <p>
+                Responsive design has become an important technique for
+                providing consistent user experiences on desktop
+                computers, tablets, and mobile devices.
+            </p>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                III. METHODOLOGY
+            </div>
+
+            <p>
+                The proposed approach uses basic HTML elements to define
+                the structure of a webpage and CSS properties to define
+                its visual presentation. The development process is
+                divided into three basic stages.
+            </p>
+
+            <div class="subsection-title">
+                A. Structure
+            </div>
+
+            <p>
+                The HTML structure contains headings, paragraphs,
+                navigation elements, images, tables, and other required
+                components.
+            </p>
+
+            <div class="subsection-title">
+                B. Styling
+            </div>
+
+            <p>
+                CSS is used to define fonts, spacing, borders, colors,
+                alignment, and page layout. CSS Grid and Flexbox can be
+                used to organize different components.
+            </p>
+
+            <div class="subsection-title">
+                C. Responsive Design
+            </div>
+
+            <p>
+                Media queries allow the layout to adapt to different
+                screen sizes. This approach improves usability on smaller
+                devices.
+            </p>
+
+        </div>
+
+        <div class="section">
+
+            <div class="figure">
+                Web Development Process
+            </div>
+
+            <div class="figure-caption">
+                Fig. 1. Basic web development process.
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                IV. IMPLEMENTATION
+            </div>
+
+            <p>
+                The implementation uses standard HTML and CSS features.
+                HTML elements are arranged according to the required
+                structure and CSS properties are then applied to control
+                the appearance of each component.
+            </p>
+
+            <p>
+                The layout can be implemented without external frameworks.
+                This provides a simple environment for understanding the
+                relationship between webpage structure and presentation.
+            </p>
+
+            <div class="equation">
+                Layout = Structure + Style
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                V. RESULTS AND DISCUSSION
+            </div>
+
+            <p>
+                The resulting interface provides a structured layout that
+                can be displayed on different screen sizes. The use of
+                simple HTML and CSS reduces the complexity of the
+                implementation while maintaining a clear visual structure.
+            </p>
+
+            <table>
+                <tr>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                </tr>
+
+                <tr>
+                    <td>HTML</td>
+                    <td>Structure</td>
+                </tr>
+
+                <tr>
+                    <td>CSS</td>
+                    <td>Presentation</td>
+                </tr>
+
+                <tr>
+                    <td>Media Queries</td>
+                    <td>Responsiveness</td>
+                </tr>
+            </table>
+
+            <div class="table-caption">
+                TABLE I. TECHNOLOGIES USED
+            </div>
+
+            <p>
+                The results demonstrate that a basic website can be
+                structured using standard technologies without requiring
+                a third-party framework.
+            </p>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                VI. CONCLUSION
+            </div>
+
+            <p>
+                This paper presented a basic approach to developing a
+                structured and responsive webpage using HTML and CSS.
+                HTML provides the content structure while CSS controls
+                the visual presentation and layout.
+            </p>
+
+            <p>
+                The approach provides a suitable foundation for students
+                and beginners who are learning the fundamental concepts of
+                web development.
+            </p>
+
+        </div>
+
+        <div class="section acknowledgment">
+
+            <div class="section-title">
+                ACKNOWLEDGMENT
+            </div>
+
+            <p>
+                The authors would like to acknowledge the Department of
+                Computer Science, Air University, for providing an
+                academic environment that supported this work.
+            </p>
+
+        </div>
+
+        <div class="section references">
+
+            <div class="section-title">
+                REFERENCES
+            </div>
+
+            <div class="reference">
+                [1] IEEE, “Structure Your Paper,” IEEE Author Center
+                Conferences.
+            </div>
+
+            <div class="reference">
+                [2] IEEE, “Authoring Tools and Templates,” IEEE Author
+                Center Conferences.
+            </div>
+
+            <div class="reference">
+                [3] J. Smith, “Introduction to Web Development,”
+                Web Technologies Journal, 2024.
+            </div>
+
+            <div class="reference">
+                [4] A. Khan, “Modern HTML and CSS Techniques,”
+                Computer Science Review, 2025.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
