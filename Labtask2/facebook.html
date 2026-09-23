@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Home</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+        }
+
+        .navbar {
+            height: 60px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #1877f2;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .search {
+            width: 230px;
+            height: 40px;
+            background-color: #f0f2f5;
+            border-radius: 20px;
+            border: none;
+            padding: 0 15px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item {
+            width: 100px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background-color: #f0f2f5;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .profile-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 230px 1fr 280px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .left-sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover {
+            background-color: #ddd;
+        }
+
+        .sidebar-icon {
+            font-size: 22px;
+        }
+
+        .feed {
+            max-width: 650px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .stories {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+        }
+
+        .story {
+            min-width: 100px;
+            height: 150px;
+            background-color: #e4e6eb;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .story:first-child {
+            background-color: #d8e8ff;
+        }
+
+        .create-post {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-input {
+            flex: 1;
+            height: 40px;
+            border: none;
+            background-color: #f0f2f5;
+            border-radius: 20px;
+            padding: 0 15px;
+            outline: none;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #ddd;
+            margin-top: 15px;
+            padding-top: 10px;
+        }
+
+        .post-action {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #65676b;
+            cursor: pointer;
+        }
+
+        .post-action:hover {
+            background-color: #f0f2f5;
+        }
+
+        .post {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .post-user {
+            font-weight: bold;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #65676b;
+            margin-top: 3px;
+        }
+
+        .post-text {
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 280px;
+            background-color: #d8e8ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            color: #555;
+            border-radius: 8px;
+        }
+
+        .post-buttons {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #ddd;
+            margin-top: 15px;
+            padding-top: 8px;
+        }
+
+        .post-button {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #65676b;
+            cursor: pointer;
+        }
+
+        .post-button:hover {
+            background-color: #f0f2f5;
+        }
+
+        .right-sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .recommendation {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-info {
+            flex: 1;
+        }
+
+        .recommendation-name {
+            font-weight: bold;
+        }
+
+        .mutual {
+            color: #65676b;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .add-button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-button:hover {
+            background-color: #166fe5;
+        }
+
+        .chat {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .chat-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 5px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .chat-user:hover {
+            background-color: #f0f2f5;
+        }
+
+        .chat-name {
+            font-weight: bold;
+        }
+
+        .online {
+            width: 9px;
+            height: 9px;
+            background-color: #31a24c;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+        @media (max-width: 1000px) {
+            .main {
+                grid-template-columns: 200px 1fr;
+            }
+
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .main {
+                display: block;
+                padding: 10px;
+            }
+
+            .left-sidebar {
+                display: none;
+            }
+
+            .search {
+                width: 150px;
+            }
+
+            .nav-item {
+                width: 45px;
+            }
+
+            .profile span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo-section">
+            <div class="logo">f</div>
+            <input type="text" class="search" placeholder="Search Facebook">
+        </div>
+
+        <div class="nav-links">
+            <div class="nav-item">⌂</div>
+            <div class="nav-item">▶</div>
+            <div class="nav-item">👥</div>
+            <div class="nav-item">🔔</div>
+            <div class="nav-item">💬</div>
+        </div>
+
+        <div class="profile">
+            <div class="profile-img">👤</div>
+            <span>Zain</span>
+        </div>
+
+    </nav>
+
+    <main class="main">
+
+        <aside class="left-sidebar">
+
+            <div class="sidebar-item">
+                <span class="sidebar-icon">👤</span>
+                Profile
+            </div>
+
+            <div class="sidebar-item">
+                <span class="sidebar-icon">👥</span>
+                Friends
+            </div>
+
+            <div class="sidebar-item">
+                <span class="sidebar-icon">📰</span>
+                News Feed
+            </div>
+
+            <div class="sidebar-item">
+                <span class="sidebar-icon">💾</span>
+                Saved
+            </div>
+
+            <div class="sidebar-item">
+                <span class="sidebar-icon">📅</span>
+                Events
+            </div>
+
+            <div class="sidebar-item">
+                <span class="sidebar-icon">🎮</span>
+                Gaming
+            </div>
+
+            <div class="sidebar-item">
+                <span class="sidebar-icon">🏪</span>
+                Marketplace
+            </div>
+
+        </aside>
+
+        <section class="feed">
+
+            <div class="stories">
+
+                <div class="story">
+                    Your Story
+                </div>
+
+                <div class="story">
+                    Ahmed
+                </div>
+
+                <div class="story">
+                    Ali
+                </div>
+
+                <div class="story">
+                    Sara
+                </div>
+
+                <div class="story">
+                    Hamza
+                </div>
+
+            </div>
+
+            <div class="create-post">
+
+                <div class="post-top">
+                    <div class="profile-img">👤</div>
+
+                    <input
+                        type="text"
+                        class="post-input"
+                        placeholder="What's on your mind?"
+                    >
+                </div>
+
+                <div class="post-actions">
+
+                    <div class="post-action">
+                        📹 Live Video
+                    </div>
+
+                    <div class="post-action">
+                        🖼️ Photo/Video
+                    </div>
+
+                    <div class="post-action">
+                        😊 Feeling
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="post">
+
+                <div class="post-header">
+                    <div class="profile-img">👤</div>
+
+                    <div>
+                        <div class="post-user">Ahmed Khan</div>
+                        <div class="post-time">2 hrs · 🌎</div>
+                    </div>
+                </div>
+
+                <div class="post-text">
+                    Having a great day! Learning HTML and CSS is fun.
+                </div>
+
+                <div class="post-image">
+                    My Photo
+                </div>
+
+                <div class="post-buttons">
+
+                    <div class="post-button">
+                        👍 Like
+                    </div>
+
+                    <div class="post-button">
+                        💬 Comment
+                    </div>
+
+                    <div class="post-button">
+                        ↗ Share
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="post">
+
+                <div class="post-header">
+                    <div class="profile-img">👤</div>
+
+                    <div>
+                        <div class="post-user">Sara Ahmed</div>
+                        <div class="post-time">5 hrs · 🌎</div>
+                    </div>
+                </div>
+
+                <div class="post-text">
+                    Welcome to my new profile. Hope everyone is doing well!
+                </div>
+
+                <div class="post-buttons">
+
+                    <div class="post-button">
+                        👍 Like
+                    </div>
+
+                    <div class="post-button">
+                        💬 Comment
+                    </div>
+
+                    <div class="post-button">
+                        ↗ Share
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <aside class="right-sidebar">
+
+            <div class="recommendation">
+
+                <div class="section-title">
+                    People You May Know
+                </div>
+
+                <div class="recommendation-user">
+
+                    <div class="profile-img">👤</div>
+
+                    <div class="recommendation-info">
+                        <div class="recommendation-name">
+                            Ali Raza
+                        </div>
+
+                        <div class="mutual">
+                            5 mutual friends
+                        </div>
+                    </div>
+
+                    <button class="add-button">
+                        Add
+                    </button>
+
+                </div>
+
+                <div class="recommendation-user">
+
+                    <div class="profile-img">👤</div>
+
+                    <div class="recommendation-info">
+                        <div class="recommendation-name">
+                            Hamza Khan
+                        </div>
+
+                        <div class="mutual">
+                            3 mutual friends
+                        </div>
+                    </div>
+
+                    <button class="add-button">
+                        Add
+                    </button>
+
+                </div>
+
+                <div class="recommendation-user">
+
+                    <div class="profile-img">👤</div>
+
+                    <div class="recommendation-info">
+                        <div class="recommendation-name">
+                            Maika
+                        </div>
+
+                        <div class="mutual">
+                            8 mutual friends
+                        </div>
+                    </div>
+
+                    <button class="add-button">
+                        Add
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="chat">
+
+                <div class="section-title">
+                    Contacts
+                </div>
+
+                <div class="chat-user">
+                    <div class="profile-img">👤</div>
+                    <div class="chat-name">Ahmed</div>
+                    <div class="online"></div>
+                </div>
+
+                <div class="chat-user">
+                    <div class="profile-img">👤</div>
+                    <div class="chat-name">Ali</div>
+                    <div class="online"></div>
+                </div>
+
+                <div class="chat-user">
+                    <div class="profile-img">👤</div>
+                    <div class="chat-name">Sara</div>
+                    <div class="online"></div>
+                </div>
+
+                <div class="chat-user">
+                    <div class="profile-img">👤</div>
+                    <div class="chat-name">Hamza</div>
+                    <div class="online"></div>
+                </div>
+
+                <div class="chat-user">
+                    <div class="profile-img">👤</div>
+                    <div class="chat-name">Usman</div>
+                    <div class="online"></div>
+                </div>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+</body>
+</html>
