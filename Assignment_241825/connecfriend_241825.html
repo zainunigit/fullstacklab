@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ConnecFriend — Your circle, closer</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#25231f;--muted:#827d73;--paper:#f7f5f0;--card:#fffefa;--line:#e8e3d9;--accent:#d45b3e;--accent-dark:#ad422b;--sage:#687b62;--sage-soft:#edf1e9;--peach:#f8e7df;--shadow:0 12px 34px rgba(49,39,28,.055);--bs-body-font-family:'DM Sans',sans-serif;--bs-body-color:var(--ink);--bs-body-bg:var(--paper);--bs-border-color:var(--line)}
+*{box-sizing:border-box}body{background:var(--paper);font-family:'DM Sans',sans-serif;color:var(--ink)}h1,h2,h3,h4,h5,.brand,.display-font{font-family:Manrope,sans-serif;letter-spacing:-.045em}button,input,textarea,select{font:inherit}.btn{border-radius:11px;font-weight:700;transition:transform .18s ease,background .18s ease,border-color .18s ease}.btn:active{transform:scale(.98)}.btn-primary{--bs-btn-bg:var(--accent);--bs-btn-border-color:var(--accent);--bs-btn-hover-bg:var(--accent-dark);--bs-btn-hover-border-color:var(--accent-dark);--bs-btn-active-bg:var(--accent-dark);--bs-btn-active-border-color:var(--accent-dark);--bs-btn-color:#fff}.btn-quiet{background:#f2eee6;border:1px solid var(--line);color:var(--ink)}.btn-quiet:hover{background:#e9e3d8;border-color:#d9d0c3}.form-control,.form-select{border-radius:11px;border-color:var(--line);background:#fffefa;padding:.72rem .85rem}.form-control:focus,.form-select:focus{border-color:#c9826d;box-shadow:0 0 0 .22rem rgba(212,91,62,.13);background:#fffefa}.muted{color:var(--muted)}.small-label{font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--muted)}.panel{background:var(--card);border:1px solid var(--line);border-radius:19px;box-shadow:var(--shadow)}.app-shell{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:238px;padding:25px 17px;background:#292923;color:#f8f5ed;display:flex;flex-direction:column;z-index:20}.brand{font-size:1.25rem;font-weight:800;letter-spacing:-.06em;display:flex;align-items:center;gap:10px}.brand-mark{width:35px;height:35px;display:grid;place-items:center;border-radius:12px;background:var(--accent);color:white;font-size:1rem}.side-label{color:#99978e;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;padding:0 12px;margin:35px 0 10px}.nav-linkish{width:100%;display:flex;align-items:center;gap:12px;border:0;background:transparent;color:#bcbab0;padding:12px 13px;border-radius:12px;text-align:left;margin:2px 0;transition:background .18s,color .18s}.nav-linkish i{font-size:1.08rem;width:20px;text-align:center}.nav-linkish:hover{background:#383831;color:white}.nav-linkish.active{background:#46443c;color:#fff}.nav-linkish.active i{color:#ef9a7e}.nav-linkish .count{margin-left:auto;font-size:.7rem;background:var(--accent);color:white;padding:2px 7px;border-radius:99px}.sidebar-user{display:flex;align-items:center;gap:10px;padding:13px 8px 0;margin-top:auto;border-top:1px solid #45443d}.sidebar-user .who{min-width:0;flex:1}.sidebar-user .who strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.85rem}.sidebar-user .who span{font-size:.72rem;color:#a9a69b}.content{margin-left:238px;padding:34px 38px 60px;max-width:1500px}.page-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:25px}.page-top h1{font-size:clamp(1.8rem,3vw,2.45rem);font-weight:800;margin:0}.eyebrow{color:var(--accent);font-size:.73rem;text-transform:uppercase;letter-spacing:.13em;font-weight:800;margin-bottom:7px}.avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:800;font-family:Manrope,sans-serif;letter-spacing:-.04em;border:1px solid rgba(0,0,0,.04);overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.avatar-lg{width:94px;height:94px;font-size:1.7rem}.avatar-sm{width:34px;height:34px;font-size:.72rem}.feed-layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:23px;align-items:start}.composer{padding:20px;margin-bottom:17px}.composer textarea{resize:vertical;min-height:70px;border:0!important;box-shadow:none!important;background:transparent!important;padding:8px 0}.composer textarea:focus{box-shadow:none!important}.post-card{padding:21px;margin-bottom:16px;animation:rise .28s ease both}.post-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;margin:15px 0 18px}.post-meta{font-size:.78rem;color:var(--muted)}.reaction{border:0;background:transparent;border-radius:10px;padding:8px 12px;color:var(--muted);font-weight:700;transition:background .18s,color .18s}.reaction:hover{background:#f2eee6;color:var(--ink)}.reaction.active-like{color:var(--sage);background:var(--sage-soft)}.reaction.active-dislike{color:var(--accent);background:var(--peach)}.section-title{font-size:1rem;font-weight:800;letter-spacing:-.025em}.friend-row,.person-row,.message-person{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid #f0ece4}.friend-row:last-child,.person-row:last-child,.message-person:last-child{border-bottom:0}.friend-row .detail,.person-row .detail,.message-person .detail{min-width:0;flex:1}.friend-row strong,.person-row strong,.message-person strong{display:block;font-size:.86rem}.friend-row small,.person-row small,.message-person small{display:block;color:var(--muted);font-size:.75rem;margin-top:2px}.online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#78966c;margin-right:5px}.empty{padding:38px 20px;text-align:center;color:var(--muted)}.empty i{font-size:1.7rem;color:#b3a99a;display:block;margin-bottom:10px}.rating-group{display:flex;gap:5px}.rating-button{border:1px solid var(--line);background:#fffefa;border-radius:9px;padding:6px 8px;color:var(--muted)}.rating-button.selected{background:var(--sage-soft);color:var(--sage);border-color:#cbd8c4}.profile-cover{height:150px;background:linear-gradient(120deg,#36392e,#72775c 65%,#c3a27e);position:relative;overflow:hidden}.profile-cover:after{content:"";position:absolute;width:260px;height:260px;border:1px solid rgba(255,255,255,.18);border-radius:50%;right:8%;top:-115px;box-shadow:0 0 0 25px rgba(255,255,255,.04),0 0 0 55px rgba(255,255,255,.035)}.profile-head{padding:0 25px 24px}.profile-avatar-wrap{margin-top:-46px;position:relative;width:max-content;border:5px solid var(--card);border-radius:50%}.info-cell{padding:13px 0;border-bottom:1px solid #f0ece4}.info-cell:last-child{border-bottom:0}.info-cell .label{font-size:.75rem;color:var(--muted);margin-bottom:4px}.info-cell .value{font-weight:700;overflow-wrap:anywhere}.people-search{max-width:420px}.invite-tabs{display:flex;gap:8px;margin-bottom:17px;flex-wrap:wrap}.tab-pill{border:1px solid var(--line);background:var(--card);padding:9px 15px;border-radius:999px;color:var(--muted);font-weight:700}.tab-pill.active{background:#292923;color:white;border-color:#292923}.chat-layout{display:grid;grid-template-columns:280px minmax(0,1fr);height:min(68vh,650px);min-height:450px;overflow:hidden}.chat-list{border-right:1px solid var(--line);overflow:auto}.message-person{width:100%;text-align:left;background:transparent;border-left:0;border-right:0;border-top:0}.message-person:hover,.message-person.active{background:#f5f1e9}.chat-main{display:flex;flex-direction:column;min-width:0}.chat-head{padding:15px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.chat-thread{padding:20px;overflow:auto;flex:1;background:linear-gradient(#fffefa,#fbf9f4)}.bubble-row{display:flex;margin-bottom:12px}.bubble-row.mine{justify-content:flex-end}.bubble{max-width:min(78%,460px);padding:11px 14px;border-radius:16px;background:#efede5;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}.bubble.mine{background:#d45b3e;color:white;border-bottom-right-radius:5px}.bubble:not(.mine){border-bottom-left-radius:5px}.bubble time{display:block;font-size:.68rem;opacity:.7;margin-top:5px}.chat-compose{padding:13px;border-top:1px solid var(--line);display:flex;gap:9px}.toast-zone{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:3000;display:grid;gap:8px;width:min(92vw,420px)}.toast-note{padding:12px 16px;border-radius:13px;background:#292923;color:white;box-shadow:0 15px 40px #0002;animation:rise .2s ease}.toast-note.error{background:#9e3e2a}.login-wrap{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;background:var(--paper)}.login-art{background:#292923;color:#f8f5ed;padding:clamp(30px,6vw,85px);display:flex;flex-direction:column;justify-content:space-between;min-height:100vh;position:relative;overflow:hidden}.login-art:before{content:"";position:absolute;width:480px;height:480px;border-radius:50%;border:1px solid #ffffff20;right:-180px;top:20%;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06}.login-art>*{position:relative}.login-art h1{font-size:clamp(2.8rem,5vw,5.4rem);line-height:1.02;max-width:560px;font-weight:800}.login-art h1 em{color:#ef9a7e;font-style:normal}.login-art .sub{max-width:410px;color:#c4c0b5;line-height:1.8}.login-form-side{display:flex;align-items:center;justify-content:center;padding:35px}.login-card{width:min(100%,420px)}.form-label{font-size:.83rem;font-weight:700}.btn-linkish{background:none;border:0;color:var(--accent);font-weight:700;padding:0}.hidden{display:none!important}.mobile-top{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1050px){.content{padding:28px 23px}.feed-layout{grid-template-columns:minmax(0,1fr) 245px}.sidebar{width:215px}.content{margin-left:215px}.chat-layout{grid-template-columns:230px minmax(0,1fr)}}
+@media(max-width:800px){.sidebar{inset:auto 0 0;width:100%;height:70px;padding:7px 8px;flex-direction:row;justify-content:space-around;align-items:center}.sidebar .brand,.sidebar .side-label,.sidebar-user{display:none!important}.sidebar nav{display:flex;width:100%;justify-content:space-around}.nav-linkish{flex-direction:column;gap:3px;padding:7px 8px;margin:0;width:auto;font-size:.66rem}.nav-linkish i{font-size:1.08rem}.nav-linkish .count{position:absolute;margin-left:24px;margin-top:-4px}.content{margin:0;padding:25px 17px 100px}.feed-layout{grid-template-columns:1fr}.friends-side{display:none}.login-wrap{grid-template-columns:1fr}.login-art{min-height:300px;padding:30px}.login-art h1{font-size:2.7rem}.login-art .sub,.login-art-foot{display:none}.login-form-side{padding:30px 22px 45px}.chat-layout{grid-template-columns:1fr;min-height:520px;height:68vh}.chat-list{border-right:0}.chat-list.hide-mobile{display:none}.chat-main.hide-mobile{display:none}.chat-main.show-mobile{display:flex}.page-top{margin-bottom:20px}.profile-cover{height:120px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="toastZone" class="toast-zone" aria-live="polite"></div>
+<div id="app"></div>
+<script>
+'use strict';
+const STORAGE_KEY='connecfriend_v5';
+const SESSION_KEY='connecfriend_session_v5';
+const COLORS=['#687b62','#bd684e','#7a7195','#b08b4f','#547c83','#b45c75','#727a4e'];
+const RATES=[{n:1,label:'Stupid',icon:'bi-emoji-dizzy'},{n:2,label:'Cool',icon:'bi-emoji-sunglasses'},{n:3,label:'Trustworthy',icon:'bi-shield-check'}];
+let S=loadState(), me=sessionStorage.getItem(SESSION_KEY)||null, view='home', chatWith=null, peopleQuery='', inviteTab='received';
+
+function starterState(){
+ return {users:[],invites:[],posts:[],msgs:[]};
+}
+function loadState(){
+ try{
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(raw){
+   const parsed=JSON.parse(raw);
+   if(parsed&&Array.isArray(parsed.users)&&Array.isArray(parsed.posts)&&Array.isArray(parsed.invites)&&Array.isArray(parsed.msgs))return parsed;
+  }
+ }catch(e){return starterState();}
+ return starterState();
+}
+function saveState(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(S));return true;}
+ catch(e){notify('Could not save. The browser may be out of storage space; try a smaller profile photo.','error');return false;}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function $(s,root=document){return root.querySelector(s);}
+function $$(s,root=document){return [...root.querySelectorAll(s)];}
+function user(id){return S.users.find(u=>u.id===id)||null;}
+function current(){return user(me);}
+function friendsOf(u){return (u?.friends||[]).map(user).filter(Boolean);}
+function timeAgo(t){const sec=Math.max(0,Math.floor((Date.now()-Number(t||Date.now()))/1000));if(sec<60)return'just now';if(sec<3600)return Math.floor(sec/60)+'m ago';if(sec<86400)return Math.floor(sec/3600)+'h ago';return Math.floor(sec/86400)+'d ago';}
+function avatar(u,size=''){if(!u)return `<span class="avatar ${size}">?</span>`;const initials=esc(u.name.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase());return `<span class="avatar ${size}" style="background:${esc(u.color||'#687b62')}">${u.avatar?`<img src="${u.avatar}" alt="${esc(u.name)}'s profile picture">`:initials}</span>`;}
+function notify(message,type=''){const el=document.createElement('div');el.className='toast-note '+(type==='error'?'error':'');el.textContent=message;$('#toastZone').append(el);setTimeout(()=>el.remove(),3200);}
+function formatLastLogin(u){return u?.lastLogin?timeAgo(u.lastLogin):'not yet';}
+function visiblePosts(){
+ const m=current();if(!m)return[];
+ return S.posts.filter(p=>{
+  if(p.by===me)return true;
+  if(!m.friends.includes(p.by))return false;
+  if(p.aud==='all')return true;
+  return Array.isArray(p.aud)&&p.aud.includes(me);
+ }).sort((a,b)=>b.t-a.t);
+}
+function renderLogin(){
+ $('#app').innerHTML=`<main class="login-wrap">
+ <section class="login-art">
+  <div class="brand"><span class="brand-mark"><i class="bi bi-people-fill"></i></span>ConnecFriend</div>
+  <div><p class="eyebrow" style="color:#ef9a7e">A little closer, every day</p><h1>Your people.<br>Your <em>corner</em><br>of the world.</h1><p class="sub mt-4">A thoughtful space to share little wins, keep up with your circle, and make room for good conversations.</p></div>
+  <div class="login-art-foot muted" style="color:#aaa79c;font-size:.78rem">A more thoughtful way to stay connected</div>
+ </section>
+ <section class="login-form-side"><div class="login-card">
+  <p class="eyebrow">Welcome back</p><h2 class="display-font fw-bold mb-2" style="font-size:2rem">Sign in to your circle</h2><p class="muted mb-4">Enter your username and password to continue.</p>
+  <form id="loginForm" novalidate>
+   <div class="mb-3"><label for="loginUser" class="form-label">Username</label><input id="loginUser" class="form-control" autocomplete="username" placeholder="Enter username" required></div>
+   <div class="mb-2"><label for="loginPass" class="form-label">Password</label><input id="loginPass" type="password" class="form-control" autocomplete="current-password" placeholder="Enter your password" required></div>
+   <div id="loginError" class="small text-danger mb-3" role="alert" style="min-height:20px"></div>
+   <button class="btn btn-primary w-100 py-3" type="submit">Sign in <i class="bi bi-arrow-right ms-1"></i></button>
+  </form>
+ </div></section></main>`;
+ $('#loginForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const id=$('#loginUser').value.trim().toLowerCase();
+  const password=$('#loginPass').value;
+  if(!id||!password){$('#loginError').textContent='Enter both your username and password.';return;}
+  if(!/^[a-z0-9_.-]{2,30}$/.test(id)){$('#loginError').textContent='Use 2–30 letters, numbers, dots, underscores or hyphens for your username.';return;}
+  let found=user(id);
+  if(found&&found.password!==password){$('#loginError').textContent='That username is already in use with a different password.';return;}
+  if(!found){
+   const name=id.split(/[._-]+/).filter(Boolean).map(part=>part.charAt(0).toUpperCase()+part.slice(1)).join(' ');
+   found={id,username:id,password,name:name||id,job:'Member',city:'',bio:'',email:'',color:COLORS[S.users.length%COLORS.length],avatar:'',lastLogin:Date.now(),friends:[],ignore:[],ratings:{}};
+   S.users.push(found);
+  }
+  me=found.id;sessionStorage.setItem(SESSION_KEY,me);found.lastLogin=Date.now();saveState();view='home';chatWith=null;renderApp();
+ });
+}
+const NAV=[['home','Home','bi-house-door'],['profile','My profile','bi-person-circle'],['people','People','bi-people'],['invites','Invitations','bi-person-plus'],['messages','Messages','bi-chat-square-text']];
+function renderApp(){
+ const m=current();if(!m){me=null;sessionStorage.removeItem(SESSION_KEY);renderLogin();return;}
+ const pending=S.invites.filter(i=>i.to===me&&i.status==='pending').length;
+ $('#app').innerHTML=`<div class="app-shell">
+ <aside class="sidebar">
+  <div class="brand"><span class="brand-mark"><i class="bi bi-people-fill"></i></span>ConnecFriend</div>
+  <div class="side-label">Your space</div><nav>${NAV.map(([key,label,icon])=>`<button class="nav-linkish ${view===key?'active':''}" data-go="${key}"><i class="bi ${icon}"></i><span>${label}</span>${key==='invites'&&pending?`<span class="count">${pending}</span>`:''}</button>`).join('')}</nav>
+  <div class="sidebar-user">${avatar(m,'avatar-sm')}<div class="who"><strong>${esc(m.name)}</strong><span>@${esc(m.username)}</span></div><button class="btn btn-sm text-light" data-act="logout" aria-label="Sign out" title="Sign out"><i class="bi bi-box-arrow-right"></i></button></div>
+ </aside>
+ <main class="content"><div id="main"></div></main></div>`;
+ renderView();
+}
+function renderView(){const target=$('#main');if(!target)return;const renderers={home:renderHome,profile:renderProfile,people:renderPeople,invites:renderInvites,messages:renderMessages};target.innerHTML=(renderers[view]||renderHome)();if(view==='messages')scrollThread();}
+function pageHead(kicker,title,sub='',action=''){return `<header class="page-top"><div><div class="eyebrow">${kicker}</div><h1>${title}</h1>${sub?`<p class="muted mt-2 mb-0">${sub}</p>`:''}</div>${action}</header>`;}
+function renderHome(){
+ const m=current(),fr=friendsOf(m).sort((a,b)=>(b.lastLogin||0)-(a.lastLogin||0)),posts=visiblePosts();
+ const audienceChecks=fr.length?fr.map(f=>`<label class="btn btn-quiet btn-sm rounded-pill"><input class="form-check-input me-1" type="checkbox" name="recipient" value="${esc(f.id)}"> ${esc(f.name)}</label>`).join(''):'<span class="small muted">Add friends before choosing specific recipients.</span>';
+ return `${pageHead('Your daily catch-up',`Good to see you, ${esc(m.name.split(' ')[0])}.`,'Here’s what your circle has been sharing.')}
+ <div class="feed-layout"><section>
+ <form id="shareForm" class="panel composer">
+  <div class="d-flex gap-3 align-items-start">${avatar(m)}<div class="flex-grow-1 min-w-0"><div class="fw-bold mb-1">What’s on your mind?</div><textarea id="postText" class="form-control" maxlength="500" aria-label="News update" placeholder="Share a thought, a small win, or something worth remembering…"></textarea></div></div>
+  <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mt-3 pt-3" style="border-top:1px solid var(--line)">
+   <div class="d-flex gap-2 align-items-center"><i class="bi bi-eye muted"></i><select id="postAudience" class="form-select form-select-sm" style="width:auto"><option value="all">All my friends</option><option value="some">Choose friends</option></select></div>
+   <button class="btn btn-primary px-4" type="submit">Share update <i class="bi bi-arrow-up-right ms-1"></i></button>
+  </div>
+  <div id="recipientPicker" class="d-none flex-wrap gap-2 mt-3">${audienceChecks}</div>
+ </form>
+ <div class="d-flex align-items-center justify-content-between mb-3"><h2 class="section-title mb-0">Your feed <span class="muted fw-normal">(${posts.length})</span></h2><span class="small muted">Newest first</span></div>
+ ${posts.length?posts.map(renderPost).join(''):`<div class="panel empty"><i class="bi bi-feather"></i><strong class="d-block text-dark mb-1">Your feed is quiet for now</strong>Posts from your friends will appear here. Visit People to connect with someone new.</div>`}
+ </section>
+ <aside class="friends-side"><div class="panel overflow-hidden mb-3"><div class="p-3 d-flex align-items-center justify-content-between"><h2 class="section-title mb-0">Your circle</h2><span class="small muted">${fr.length}</span></div>
+ ${fr.length?fr.map(f=>`<div class="friend-row">${avatar(f,'avatar-sm')}<div class="detail"><strong>${esc(f.name)}</strong><small><span class="online-dot"></span>Last login ${formatLastLogin(f)}</small></div><button class="btn btn-sm btn-quiet" data-act="chat" data-id="${esc(f.id)}" title="Message ${esc(f.name)}"><i class="bi bi-chat"></i></button></div>`).join(''):`<div class="empty py-4"><i class="bi bi-people"></i><span class="small">No friends yet.</span></div>`}
+ <div class="p-3 border-top"><button class="btn btn-quiet w-100" data-go="people">Find people <i class="bi bi-arrow-right ms-1"></i></button></div></div>
+ <div class="panel p-3"><div class="small-label mb-2">A little reminder</div><p class="small muted mb-0">Good connections grow one conversation at a time. Say hello to someone today.</p></div>
+ </aside></div>`;
+}
+function renderPost(p){
+ const author=user(p.by);if(!author)return'';
+ const liked=p.likes.includes(me),disliked=p.dislikes.includes(me);
+ const audience=p.aud==='all'?'All friends':`${Array.isArray(p.aud)?p.aud.length:0} selected`;
+ return `<article class="panel post-card"><div class="d-flex align-items-center gap-3">${avatar(author)}<div class="flex-grow-1 min-w-0"><div class="fw-bold">${esc(author.name)}${author.id===me?' <span class="muted fw-normal">(you)</span>':''}</div><div class="post-meta">${timeAgo(p.t)} <span class="mx-1">·</span> ${audience} <span class="mx-1">·</span> last login ${formatLastLogin(author)}</div></div>${p.by===me?'<span class="badge rounded-pill text-bg-light">Your post</span>':''}</div>
+ <p class="post-text mb-0">${esc(p.text)}</p><div class="d-flex gap-2 pt-3 mt-3" style="border-top:1px solid var(--line)">
+ <button class="reaction ${liked?'active-like':''}" data-act="react" data-id="${esc(p.id)}" data-kind="likes" aria-pressed="${liked}"><i class="bi ${liked?'bi-hand-thumbs-up-fill':'bi-hand-thumbs-up'} me-1"></i> Like <span class="ms-1">${p.likes.length}</span></button>
+ <button class="reaction ${disliked?'active-dislike':''}" data-act="react" data-id="${esc(p.id)}" data-kind="dislikes" aria-pressed="${disliked}"><i class="bi ${disliked?'bi-hand-thumbs-down-fill':'bi-hand-thumbs-down'} me-1"></i> Dislike <span class="ms-1">${p.dislikes.length}</span></button>
+ </div></article>`;
+}
+function renderProfile(){
+ const m=current(),fr=friendsOf(m);
+ return `${pageHead('A little more about you','Your profile','Make it feel like you. Update your details and profile picture below.')}
+ <div class="row g-4"><div class="col-xl-7"><section class="panel overflow-hidden mb-4"><div class="profile-cover"></div><div class="profile-head"><div class="profile-avatar-wrap">${avatar(m,'avatar-lg')}</div><div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mt-3"><div><h2 class="h3 fw-bold mb-1">${esc(m.name)}</h2><div class="muted">${esc(m.job||'Member')} · ${esc(m.city||'Location not set')}</div></div><button class="btn btn-primary" data-act="edit-profile"><i class="bi bi-pencil me-1"></i> Edit profile</button></div><p class="mt-3 mb-0" style="line-height:1.7">${esc(m.bio||'No bio yet. Add a little introduction.')}</p>
+ <div class="row mt-3"><div class="col-sm-6 info-cell"><div class="label">Username</div><div class="value">@${esc(m.username)}</div></div><div class="col-sm-6 info-cell"><div class="label">Email</div><div class="value">${esc(m.email||'Not set')}</div></div><div class="col-sm-6 info-cell"><div class="label">Work / role</div><div class="value">${esc(m.job||'Not set')}</div></div><div class="col-sm-6 info-cell"><div class="label">Friends</div><div class="value">${fr.length} ${fr.length===1?'friend':'friends'}</div></div></div></div></section>
+ <section class="panel p-4"><div class="d-flex align-items-center justify-content-between mb-3"><h2 class="section-title mb-0">Your friends</h2><span class="small muted">${fr.length} connected</span></div>
+ ${fr.length?fr.map(f=>`<div class="person-row px-0">${avatar(f)}<div class="detail"><strong>${esc(f.name)}</strong><small>${esc(f.job||'Member')} · ${esc(f.city||'')}</small></div><div class="rating-group" aria-label="Rate ${esc(f.name)}">${RATES.map(r=>`<button class="rating-button ${m.ratings[f.id]===r.n?'selected':''}" title="${r.label}" aria-label="${r.label}" aria-pressed="${m.ratings[f.id]===r.n}" data-act="rate" data-id="${esc(f.id)}" data-rating="${r.n}"><i class="bi ${r.icon}"></i></button>`).join('')}</div></div>`).join(''):`<div class="empty"><i class="bi bi-people"></i>You haven't connected with anyone yet.</div>`}
+ <div class="small muted mt-3">Rating scale: 1 Stupid · 2 Cool · 3 Trustworthy</div></section></div>
+ <div class="col-xl-5"><section class="panel p-4 mb-4"><div class="small-label mb-2">Profile tips</div><h2 class="section-title">Make it yours</h2><p class="muted small mb-0">Add a profile photo, a short bio and your role so friends know what you’re up to. Your updates are shown according to their audience setting.</p></section></div></div>`;
+}
+function renderPeople(){
+ const m=current(),list=S.users.filter(u=>u.id!==me&&(`${u.name} ${u.job} ${u.city}`).toLowerCase().includes(peopleQuery.toLowerCase()));
+ return `${pageHead('Grow your circle','People','Find members, send a friend invitation, and start a conversation.')}
+ <div class="mb-3"><div class="position-relative people-search"><i class="bi bi-search position-absolute muted" style="left:14px;top:12px"></i><input id="peopleSearch" class="form-control ps-5" value="${esc(peopleQuery)}" placeholder="Search name, role or city" aria-label="Search people"></div></div>
+ <section class="panel overflow-hidden">${list.length?list.map(u=>{
+  const isFriend=m.friends.includes(u.id),sent=S.invites.some(i=>i.from===me&&i.to===u.id&&i.status==='pending'),incoming=S.invites.some(i=>i.from===u.id&&i.to===me&&i.status==='pending'),blocked=(u.ignore||[]).includes(me);
+  let action=isFriend?`<span class="small fw-bold" style="color:var(--sage)"><i class="bi bi-check-circle me-1"></i>Friends</span>`:sent?`<span class="small muted">Invitation sent</span>`:incoming?`<button class="btn btn-primary btn-sm" data-go="invites">Respond</button>`:blocked?`<span class="small muted">Request unavailable</span>`:`<button class="btn btn-quiet btn-sm" data-act="invite" data-id="${esc(u.id)}"><i class="bi bi-person-plus me-1"></i>Add friend</button>`;
+  return `<div class="person-row p-3">${avatar(u)}<div class="detail"><strong>${esc(u.name)}</strong><small>${esc(u.job||'Member')} · ${esc(u.city||'')}</small><small>${esc(u.bio||'')}</small></div><div class="d-flex flex-column flex-sm-row gap-2 align-items-end align-items-sm-center">${action}<button class="btn btn-sm btn-quiet" data-act="chat" data-id="${esc(u.id)}" title="Message ${esc(u.name)}"><i class="bi bi-chat-dots"></i></button></div></div>`;
+ }).join(''):`<div class="empty"><i class="bi bi-search"></i>No members match that search.</div>`}</section>`;
+}
+function renderInvites(){
+ const m=current(),received=S.invites.filter(i=>i.to===me&&i.status==='pending'),sent=S.invites.filter(i=>i.from===me&&i.status==='pending');
+ const ignored=(m.ignore||[]).map(user).filter(Boolean);
+ const tabs=[['received',`Received (${received.length})`],['sent',`Sent (${sent.length})`],['ignored',`Ignore list (${ignored.length})`]];
+ let content='';
+ if(inviteTab==='received')content=received.length?received.map(i=>{const u=user(i.from);if(!u)return'';return `<div class="person-row p-3">${avatar(u)}<div class="detail"><strong>${esc(u.name)}</strong><small>${esc(u.job||'Member')} · ${esc(u.city||'')}</small></div><button class="btn btn-primary btn-sm" data-act="accept" data-id="${esc(u.id)}">Accept</button><button class="btn btn-quiet btn-sm" data-act="ignore" data-id="${esc(u.id)}">Ignore</button></div>`}).join(''):`<div class="empty"><i class="bi bi-inbox"></i>No pending invitations.</div>`;
+ if(inviteTab==='sent')content=sent.length?sent.map(i=>{const u=user(i.to);if(!u)return'';return `<div class="person-row p-3">${avatar(u)}<div class="detail"><strong>${esc(u.name)}</strong><small>Waiting for their response</small></div><span class="small muted">Pending</span><button class="btn btn-quiet btn-sm" data-act="cancel-invite" data-id="${esc(u.id)}">Cancel</button></div>`}).join(''):`<div class="empty"><i class="bi bi-send"></i>No outgoing invitations.</div>`;
+ if(inviteTab==='ignored')content=ignored.length?ignored.map(u=>`<div class="person-row p-3">${avatar(u)}<div class="detail"><strong>${esc(u.name)}</strong><small>Requests from this person are ignored.</small></div><button class="btn btn-quiet btn-sm" data-act="unignore" data-id="${esc(u.id)}">Remove</button></div>`).join(''):`<div class="empty"><i class="bi bi-shield-check"></i>Your ignore list is empty.</div>`;
+ return `${pageHead('Connections','Invitations','Choose who gets to be part of your circle.')}<div class="invite-tabs">${tabs.map(([id,label])=>`<button class="tab-pill ${inviteTab===id?'active':''}" data-tab="${id}">${label}</button>`).join('')}</div><section class="panel overflow-hidden">${content}</section>`;
+}
+function messagesWith(id){return S.msgs.filter(x=>(x.from===me&&x.to===id)||(x.from===id&&x.to===me)).sort((a,b)=>a.t-b.t);}
+function renderMessages(){
+ const others=S.users.filter(u=>u.id!==me).sort((a,b)=>{
+  const last=id=>S.msgs.filter(x=>(x.from===me&&x.to===id)||(x.from===id&&x.to===me)).reduce((n,x)=>Math.max(n,x.t),0);
+  return last(b.id)-last(a.id)||a.name.localeCompare(b.name);
+ });
+ if(!chatWith||!user(chatWith))chatWith=others.length?others[0].id:null;
+ const selected=user(chatWith),mobileSelected=!!selected;
+ return `${pageHead('Keep in touch','Messages','Private conversations with friends and other members.')}
+ <section class="panel chat-layout">
+  <div class="chat-list ${mobileSelected?'hide-mobile':''}">${others.map(u=>{
+   const ms=messagesWith(u.id),last=ms[ms.length-1];
+   return `<button class="message-person ${chatWith===u.id?'active':''}" data-act="chat" data-id="${esc(u.id)}">${avatar(u,'avatar-sm')}<span class="detail"><strong>${esc(u.name)}</strong><small>${last?esc(last.text):'Start a conversation'}</small></span></button>`;
+  }).join('')}</div>
+  <div class="chat-main ${mobileSelected?'show-mobile':'hide-mobile'}">${selected?`<div class="chat-head"><button class="btn btn-quiet btn-sm d-md-none" data-act="chat-back" aria-label="Back to conversations"><i class="bi bi-arrow-left"></i></button>${avatar(selected,'avatar-sm')}<div><strong>${esc(selected.name)}</strong><div class="small muted">${current().friends.includes(selected.id)?'Friend':'ConnecFriend member'}</div></div></div><div id="chatThread" class="chat-thread">${threadMarkup(selected.id)}</div><form id="messageForm" class="chat-compose"><input id="messageText" class="form-control" maxlength="1000" placeholder="Write a message…" aria-label="Write a message" autocomplete="off"><button class="btn btn-primary px-3" aria-label="Send message"><i class="bi bi-send-fill"></i></button></form>`:`<div class="empty m-auto"><i class="bi bi-chat-square-text"></i>Select a member to start a conversation.</div>`}</div>
+ </section>`;
+}
+function threadMarkup(id){
+ const ms=messagesWith(id);if(!ms.length)return'<div class="empty"><i class="bi bi-chat-heart"></i>It starts with a hello.</div>';
+ return ms.map(x=>`<div class="bubble-row ${x.from===me?'mine':''}"><div class="bubble ${x.from===me?'mine':''}">${esc(x.text)}<time>${timeAgo(x.t)}</time></div></div>`).join('');
+}
+function scrollThread(){const t=$('#chatThread');if(t)t.scrollTop=t.scrollHeight;}
+function showEditProfile(){
+ const m=current();
+ const modal=document.createElement('div');modal.className='position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3';modal.style.cssText='background:#25231f88;z-index:1500;backdrop-filter:blur(5px)';
+ modal.innerHTML=`<section class="panel p-4" style="width:min(100%,540px);max-height:92vh;overflow:auto"><div class="d-flex align-items-start justify-content-between mb-3"><div><div class="eyebrow">Make it yours</div><h2 class="h4 fw-bold mb-0">Edit your profile</h2></div><button type="button" class="btn btn-quiet" data-close-modal aria-label="Close"><i class="bi bi-x-lg"></i></button></div>
+ <form id="profileForm"><div class="d-flex align-items-center gap-3 mb-4">${avatar(m,'avatar-lg')}<div><label class="form-label" for="profilePhoto">Profile picture</label><input id="profilePhoto" type="file" accept="image/*" class="form-control form-control-sm"><div class="small muted mt-1">Choose a small image (up to 1.5 MB).</div>${m.avatar?'<button type="button" class="btn-linkish small mt-2" data-remove-photo>Remove current photo</button>':''}</div></div>
+ <div class="mb-3"><label class="form-label" for="editName">Full name</label><input id="editName" class="form-control" maxlength="70" required value="${esc(m.name)}"></div>
+ <div class="row g-3"><div class="col-sm-6"><label class="form-label" for="editJob">Work / role</label><input id="editJob" class="form-control" maxlength="80" value="${esc(m.job||'')}"></div><div class="col-sm-6"><label class="form-label" for="editCity">City</label><input id="editCity" class="form-control" maxlength="80" value="${esc(m.city||'')}"></div></div>
+ <div class="mt-3 mb-3"><label class="form-label" for="editEmail">Email</label><input id="editEmail" type="email" class="form-control" maxlength="120" value="${esc(m.email||'')}"></div>
+ <div class="mb-4"><label class="form-label" for="editBio">About you</label><textarea id="editBio" class="form-control" rows="3" maxlength="240">${esc(m.bio||'')}</textarea></div>
+ <div class="d-flex justify-content-end gap-2"><button type="button" class="btn btn-quiet" data-close-modal>Cancel</button><button class="btn btn-primary px-4">Save changes</button></div></form></section>`;
+ document.body.append(modal);
+ let newAvatar=m.avatar||'';
+ $('[data-close-modal]',modal).addEventListener('click',()=>modal.remove());
+ $$('[data-close-modal]',modal).forEach(b=>b.addEventListener('click',()=>modal.remove()));
+ const remove=$('[data-remove-photo]',modal);if(remove)remove.addEventListener('click',()=>{newAvatar='';remove.remove();notify('Photo will be removed when you save.');});
+ $('#profilePhoto',modal).addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  if(!file.type.startsWith('image/')){notify('Please choose an image file.','error');e.target.value='';return;}
+  if(file.size>1.5*1024*1024){notify('Please choose an image smaller than 1.5 MB.','error');e.target.value='';return;}
+  const reader=new FileReader();reader.onload=()=>{newAvatar=reader.result;notify('Photo ready. Save your profile to apply it.');};reader.onerror=()=>notify('Could not read that image.','error');reader.readAsDataURL(file);
+ });
+ $('#profileForm',modal).addEventListener('submit',e=>{
+  e.preventDefault();const name=$('#editName',modal).value.trim();if(!name){notify('Name cannot be empty.','error');return;}
+  m.name=name;m.job=$('#editJob',modal).value.trim();m.city=$('#editCity',modal).value.trim();m.email=$('#editEmail',modal).value.trim();m.bio=$('#editBio',modal).value.trim();m.avatar=newAvatar;
+  saveState();modal.remove();renderApp();notify('Profile updated.');
+ });
+}
+function acceptInvitation(fromId){
+ const incoming=S.invites.find(i=>i.from===fromId&&i.to===me&&i.status==='pending');if(!incoming)return;
+ const sender=user(fromId),recipient=current();if(!sender||!recipient)return;
+ if((recipient.ignore||[]).includes(fromId)){notify('This member is on your ignore list. Remove them before accepting.','error');return;}
+ S.invites=S.invites.filter(i=>!(i.from===fromId&&i.to===me));
+ if(!recipient.friends.includes(fromId))recipient.friends.push(fromId);
+ if(!sender.friends.includes(me))sender.friends.push(me);
+ saveState();renderApp();notify(`You and ${sender.name} are now friends.`);
+}
+document.addEventListener('click',e=>{
+ const go=e.target.closest('[data-go]');if(go){view=go.dataset.go;renderApp();return;}
+ const tab=e.target.closest('[data-tab]');if(tab){inviteTab=tab.dataset.tab;renderView();return;}
+ const close=e.target.closest('[data-close-modal]');if(close){close.closest('.position-fixed')?.remove();return;}
+ const removePhoto=e.target.closest('[data-remove-photo]');if(removePhoto){return;}
+ const b=e.target.closest('[data-act]');if(!b)return;
+ const action=b.dataset.act,id=b.dataset.id;
+ if(action==='logout'){me=null;chatWith=null;sessionStorage.removeItem(SESSION_KEY);renderLogin();return;}
+ if(action==='edit-profile'){showEditProfile();return;}
+ if(action==='chat'){chatWith=id;view='messages';renderApp();return;}
+ if(action==='chat-back'){chatWith=null;renderView();return;}
+ if(action==='react'){
+  const p=S.posts.find(x=>String(x.id)===String(id));if(!p)return;
+  const key=b.dataset.kind;if(!['likes','dislikes'].includes(key))return;
+  const already=p[key].includes(me);p.likes=p.likes.filter(x=>x!==me);p.dislikes=p.dislikes.filter(x=>x!==me);if(!already)p[key].push(me);
+  saveState();renderView();return;
+ }
+ if(action==='rate'){
+  const m=current(),n=Number(b.dataset.rating);if(!m||!RATES.some(r=>r.n===n))return;
+  if(m.ratings[id]===n)delete m.ratings[id];else m.ratings[id]=n;
+  saveState();renderView();notify(m.ratings[id]?`Rated ${user(id)?.name||'friend'}: ${RATES[n-1].label}`:'Rating removed.');return;
+ }
+ if(action==='invite'){
+  const recipient=user(id);if(!recipient||id===me)return;
+  if(current().friends.includes(id)){notify('You are already friends.');return;}
+  if((recipient.ignore||[]).includes(me)){notify(`Request not sent. ${recipient.name} has you on their ignore list.`,'error');return;}
+  if(S.invites.some(i=>i.from===me&&i.to===id&&i.status==='pending')){notify('You already sent this invitation.');return;}
+  S.invites.push({from:me,to:id,status:'pending'});saveState();renderApp();notify(`Invitation sent to ${recipient.name}.`);return;
+ }
+ if(action==='accept'){acceptInvitation(id);return;}
+ if(action==='ignore'){
+  S.invites=S.invites.filter(i=>!(i.from===id&&i.to===me));
+  if(!current().ignore.includes(id))current().ignore.push(id);
+  saveState();renderApp();notify(`${user(id)?.name||'Member'} added to your ignore list.`);return;
+ }
+ if(action==='unignore'){
+  current().ignore=current().ignore.filter(x=>x!==id);saveState();renderApp();notify('Member removed from your ignore list.');return;
+ }
+ if(action==='cancel-invite'){
+  S.invites=S.invites.filter(i=>!(i.from===me&&i.to===id&&i.status==='pending'));saveState();renderApp();notify('Invitation cancelled.');return;
+ }
+});
+document.addEventListener('change',e=>{
+ if(e.target.id==='postAudience'){
+  const picker=$('#recipientPicker');if(picker){picker.classList.toggle('d-none',e.target.value!=='some');picker.classList.toggle('d-flex',e.target.value==='some');}
+ }
+});
+document.addEventListener('input',e=>{
+ if(e.target.id==='peopleSearch'){
+  const pos=e.target.selectionStart;peopleQuery=e.target.value;renderView();const input=$('#peopleSearch');if(input){input.focus();input.setSelectionRange(pos,pos);}
+ }
+});
+document.addEventListener('submit',e=>{
+ if(e.target.id==='shareForm'){
+  e.preventDefault();const text=$('#postText').value.trim(),audience=$('#postAudience').value;
+  const recipients=$$('[name="recipient"]:checked',e.target).map(x=>x.value);
+  if(!text){notify('Write something before sharing.','error');return;}
+  if(audience==='some'&&!recipients.length){notify('Choose at least one friend, or select All my friends.','error');return;}
+  const m=current();const validRecipients=recipients.filter(id=>m.friends.includes(id)&&!!user(id));
+  if(audience==='some'&&!validRecipients.length){notify('Choose at least one of your current friends.','error');return;}
+  S.posts.push({id:'p-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),by:me,text,t:Date.now(),aud:audience==='all'?'all':validRecipients,likes:[],dislikes:[]});
+  saveState();renderApp();notify('Your update has been shared.');return;
+ }
+ if(e.target.id==='messageForm'){
+  e.preventDefault();const text=$('#messageText').value.trim();if(!text){notify('Type a message first.','error');return;}
+  if(!chatWith||!user(chatWith)){notify('Choose a member first.','error');return;}
+  S.msgs.push({id:'m-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),from:me,to:chatWith,text,t:Date.now()});saveState();renderView();scrollThread();return;
+ }
+});
+function logoutIfMissing(){if(!me||!user(me)){me=null;sessionStorage.removeItem(SESSION_KEY);renderLogin();}else renderApp();}
+logoutIfMissing();
+</script>
+</body>
+</html>
