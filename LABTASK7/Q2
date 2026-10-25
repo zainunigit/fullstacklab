@@ -1,0 +1,515 @@
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
+fs.mkdirSync(DATA_DIR, { recursive: true });
+
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
+
+class Store {
+  constructor(name, seed = []) {
+    this.file = path.join(DATA_DIR, `${name}.json`);
+    this.items = [];
+    this.nextId = 1;
+    if (fs.existsSync(this.file)) {
+      const saved = JSON.parse(fs.readFileSync(this.file, 'utf8'));
+      this.items = saved.items;
+      this.nextId = saved.nextId;
+    } else {
+      for (const s of seed) this.insert(s, false);
+      this.save();
+    }
+  }
+
+  save() {
+    const tmp = `${this.file}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify({ nextId: this.nextId, items: this.items }, null, 2));
+    fs.renameSync(tmp, this.file);
+  }
+  find(id) {
+    return this.items.find((x) => x.id === id);
+  }
+  insert(data, persist = true) {
+    const record = { id: this.nextId++, ...data, createdAt: new Date().toISOString() };
+    this.items.push(record);
+    if (persist) this.save();
+    return record;
+  }
+  replace(id, data) {
+    const i = this.items.findIndex((x) => x.id === id);
+    const cur = this.items[i];
+    this.items[i] = { id, ...data, createdAt: cur.createdAt, updatedAt: new Date().toISOString() };
+    this.save();
+    return this.items[i];
+  }
+  remove(id) {
+    const i = this.items.findIndex((x) => x.id === id);
+    const [gone] = this.items.splice(i, 1);
+    this.save();
+    return gone;
+  }
+  removeWhere(pred) {
+    const before = this.items.length;
+    this.items = this.items.filter((x) => !pred(x));
+    if (this.items.length !== before) this.save();
+  }
+}
+
+const SEED_PRODUCTS = [
+  ['Aero Runner', 'Running', 'Lightweight running shoes with breathable comfort.', 79.99, '👟'],
+  ['Mountain Trek', 'Outdoor', 'Durable outdoor shoes built for your adventures.', 109.99, '🥾'],
+  ['Classic Oxford', 'Formal', 'Elegant leather-inspired shoes for formal occasions.', 89.99, '👞'],
+  ['Urban Street', 'Casual', 'Modern everyday sneakers made for city life.', 69.99, '👟'],
+  ['Velocity Pro', 'Sports', 'Performance shoes designed for speed and training.', 119.99, '👟'],
+  ['Urban Boots', 'Boots', 'Stylish boots combining durability and comfort.', 129.99, '👢'],
+  ['Cloud Walk', 'Lifestyle', 'Soft and comfortable shoes for everyday walking.', 74.99, '👟'],
+  ['Elite Runner', 'Premium', 'Premium performance sneakers for serious runners.', 149.99, '👟'],
+].map(([name, category, description, price, emoji]) => ({ name, category, description, price, emoji }));
+
+const SEED_REVIEWS = [
+  { productId: 1, customerName: 'Ahmed Khan', rating: 5, verified: true,
+    comment: 'The Aero Runner shoes are extremely comfortable. They are perfect for my daily runs.' },
+  { customerName: 'Sarah Ali', rating: 5, verified: true,
+    comment: 'Great quality and the shoes look even better in person. Very happy with my purchase.' },
+  { productId: 3, customerName: 'Usman Raza', rating: 5, verified: true,
+    comment: 'Fast delivery and excellent quality. The Classic Oxford shoes are perfect.' },
+];
+
+const products = new Store('products', SEED_PRODUCTS);
+const reviews = new Store('reviews', SEED_REVIEWS);
+const users = new Store('users');
+const carts = new Store('cart');
+const orders = new Store('orders');
+const stores = { products, users };
+
+const str = (required = false, def) => ({
+  required,
+  default: def,
+  parse(v) {
+    if (typeof v !== 'string' || !v.trim()) throw 'must be a non-empty string';
+    return v.trim();
+  },
+});
+const num = (required, min, max, { integer = false, def } = {}) => ({
+  required,
+  default: def,
+  parse(v) {
+    if (typeof v !== 'number' || !Number.isFinite(v)) throw 'must be a number';
+    if (integer && !Number.isInteger(v)) throw 'must be an integer';
+    if (v < min || v > max) throw `must be between ${min} and ${max}`;
+    return v;
+  },
+});
+const bool = (def) => ({
+  required: false,
+  default: def,
+  parse(v) {
+    if (typeof v !== 'boolean') throw 'must be true or false';
+    return v;
+  },
+});
+const oneOf = (required, values, def) => ({
+  required,
+  default: def,
+  parse(v) {
+    if (!values.includes(v)) throw `must be one of: ${values.join(', ')}`;
+    return v;
+  },
+});
+const ref = (required, collection) => ({
+  required,
+  parse(v) {
+    if (!Number.isInteger(v)) throw 'must be an integer id';
+    if (!stores[collection].find(v)) throw `no ${collection.slice(0, -1)} with id ${v}`;
+    return v;
+  },
+});
+const email = (required) => ({
+  required,
+  parse(v) {
+    if (typeof v !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) throw 'must be a valid email';
+    return v.trim().toLowerCase();
+  },
+});
+const password = {
+  required: true,
+  parse(v) {
+    if (typeof v !== 'string' || v.length < 6) throw 'must be at least 6 characters';
+    return v;
+  },
+};
+
+function validate(fields, body, partial) {
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) {
+    throw new HttpError(400, 'Body must be a JSON object');
+  }
+  const errors = [];
+  const data = {};
+  for (const [key, rule] of Object.entries(fields)) {
+    const value = body[key];
+    if (value === undefined) {
+      if (partial) continue;
+      if (rule.default !== undefined) data[key] = rule.default;
+      else if (rule.required) errors.push(`${key} is required`);
+      continue;
+    }
+    try {
+      data[key] = rule.parse(value);
+    } catch (msg) {
+      if (typeof msg !== 'string') throw msg;
+      errors.push(`${key} ${msg}`);
+    }
+  }
+  if (errors.length) throw new HttpError(400, errors.join('; '));
+  return data;
+}
+
+const routes = [];
+const route = (method, pattern, handler) => {
+  const keys = [];
+  const re = new RegExp(`^${pattern.replace(/:(\w+)/g, (_, k) => (keys.push(k), '([^/]+)'))}/?$`);
+  routes.push({ method, re, keys, handler });
+};
+
+const parseId = (raw) => {
+  const id = Number(raw);
+  if (!Number.isInteger(id)) throw new HttpError(400, 'id must be an integer');
+  return id;
+};
+
+async function readJson(req) {
+  let raw = '';
+  for await (const chunk of req) {
+    raw += chunk;
+    if (Buffer.byteLength(raw) > 65536) throw new HttpError(413, 'Too large');
+  }
+  if (!raw.trim()) return {};
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new HttpError(400, 'Invalid JSON');
+  }
+}
+
+function crud(base, label, store, def) {
+  const out = def.out || ((r) => r);
+  const getOr404 = (rawId) => {
+    const id = parseId(rawId);
+    const rec = store.find(id);
+    if (!rec) throw new HttpError(404, `${label} ${id} not found`);
+    return rec;
+  };
+
+  route('GET', `/${base}`, ({ query }) => {
+    let list = store.items;
+    for (const f of def.filters || []) {
+      const q = query.get(f);
+      if (q !== null) list = list.filter((x) => String(x[f]).toLowerCase() === q.toLowerCase());
+    }
+    const q = query.get('q');
+    if (q && def.search) {
+      list = list.filter((x) => def.search.some((f) => String(x[f] ?? '').toLowerCase().includes(q.toLowerCase())));
+    }
+    return [200, list.map(out)];
+  });
+  route('GET', `/${base}/:id`, ({ params }) => [200, out(getOr404(params.id))]);
+  route('POST', `/${base}`, ({ body }) => [201, out(store.insert(validate(def.fields, body, false)))]);
+  route('PUT', `/${base}/:id`, ({ params, body }) => {
+    const cur = getOr404(params.id);
+    return [200, out(store.replace(cur.id, validate(def.fields, body, false)))];
+  });
+  route('PATCH', `/${base}/:id`, ({ params, body }) => {
+    const cur = getOr404(params.id);
+    const { id, createdAt, updatedAt, ...rest } = cur;
+    return [200, out(store.replace(id, { ...rest, ...validate(def.fields, body, true) }))];
+  });
+  route('DELETE', `/${base}/:id`, ({ params }) => {
+    const cur = getOr404(params.id);
+    store.remove(cur.id);
+    if (def.afterDelete) def.afterDelete(cur.id);
+    return [200, { deleted: out(cur) }];
+  });
+}
+
+const SHIPPING_CENTS = 1000;
+const cents = (n) => Math.round(n * 100);
+function totals(lines) {
+  const sub = lines.reduce((sum, l) => sum + cents(l.price) * l.quantity, 0);
+  const ship = lines.length ? SHIPPING_CENTS : 0;
+  return { subtotal: sub / 100, shipping: ship / 100, total: (sub + ship) / 100 };
+}
+
+crud('products', 'product', products, {
+  fields: {
+    name: str(true),
+    category: str(true),
+    description: str(true),
+    price: num(true, 0.01, 100000),
+    emoji: str(false, '👟'),
+  },
+  filters: ['category'],
+  search: ['name', 'description'],
+  afterDelete(id) {
+    reviews.removeWhere((r) => r.productId === id);
+    carts.removeWhere((c) => c.productId === id);
+  },
+});
+
+crud('reviews', 'review', reviews, {
+  fields: {
+    productId: ref(false, 'products'),
+    customerName: str(true),
+    rating: num(true, 1, 5, { integer: true }),
+    comment: str(true),
+    verified: bool(false),
+  },
+  filters: ['productId', 'rating', 'verified'],
+});
+
+const publicUser = ({ passwordHash, salt, ...u }) => u;
+const hashPw = (pw, salt = crypto.randomBytes(16).toString('hex')) => ({
+  salt,
+  passwordHash: crypto.scryptSync(pw, salt, 64).toString('hex'),
+});
+const checkPw = (pw, user) =>
+  crypto.timingSafeEqual(
+    Buffer.from(hashPw(pw, user.salt).passwordHash, 'hex'),
+    Buffer.from(user.passwordHash, 'hex')
+  );
+const emailTaken = (addr, exceptId) => users.items.some((u) => u.email === addr && u.id !== exceptId);
+
+route('POST', '/signup', ({ body }) => {
+  const data = validate({ name: str(true), email: email(true), password }, body, false);
+  if (body.confirmPassword !== data.password) throw new HttpError(400, 'confirmPassword does not match password');
+  if (emailTaken(data.email)) throw new HttpError(409, 'Email already registered');
+  const { password: pw, ...profile } = data;
+  return [201, publicUser(users.insert({ ...profile, ...hashPw(pw) }))];
+});
+
+route('POST', '/login', ({ body }) => {
+  const data = validate({ email: email(true), password: { required: true, parse: (v) => {
+    if (typeof v !== 'string' || !v) throw 'is required';
+    return v;
+  } } }, body, false);
+  const user = users.items.find((u) => u.email === data.email);
+  if (!user || !checkPw(data.password, user)) throw new HttpError(401, 'Invalid email or password');
+  return [200, { message: 'Login successful', remember: body.remember === true, user: publicUser(user) }];
+});
+
+route('GET', '/users', () => [200, users.items.map(publicUser)]);
+route('GET', '/users/:id', ({ params }) => {
+  const user = users.find(parseId(params.id));
+  if (!user) throw new HttpError(404, 'user not found');
+  return [200, publicUser(user)];
+});
+route('PATCH', '/users/:id', ({ params, body }) => {
+  const user = users.find(parseId(params.id));
+  if (!user) throw new HttpError(404, 'user not found');
+  const data = validate({ name: str(), email: email(), password: { ...password, required: false } }, body, true);
+  if (data.email && emailTaken(data.email, user.id)) throw new HttpError(409, 'Email already registered');
+  const { id, createdAt, updatedAt, ...rest } = user;
+  const { password: pw, ...profile } = data;
+  return [200, publicUser(users.replace(id, { ...rest, ...profile, ...(pw ? hashPw(pw) : {}) }))];
+});
+route('DELETE', '/users/:id', ({ params }) => {
+  const user = users.find(parseId(params.id));
+  if (!user) throw new HttpError(404, 'user not found');
+  users.remove(user.id);
+  carts.removeWhere((c) => c.userId === user.id);
+  return [200, { deleted: publicUser(user) }];
+});
+
+const cartFields = {
+  userId: ref(true, 'users'),
+  productId: ref(true, 'products'),
+  quantity: num(false, 1, 99, { integer: true, def: 1 }),
+  size: num(false, 4, 15, { def: 8 }),
+};
+
+function cartView(userId) {
+  const lines = carts.items
+    .filter((c) => c.userId === userId)
+    .map((c) => {
+      const p = products.find(c.productId);
+      return {
+        id: c.id,
+        productId: c.productId,
+        name: p.name,
+        category: p.category,
+        emoji: p.emoji,
+        price: p.price,
+        size: c.size,
+        quantity: c.quantity,
+        lineTotal: (cents(p.price) * c.quantity) / 100,
+      };
+    });
+  return {
+    userId,
+    items: lines,
+    itemCount: lines.reduce((n, l) => n + l.quantity, 0),
+    ...totals(lines),
+  };
+}
+
+function cartUserId(query) {
+  const raw = query.get('userId');
+  if (raw === null) throw new HttpError(400, 'userId query parameter is required');
+  const id = parseId(raw);
+  if (!users.find(id)) throw new HttpError(404, `user ${id} not found`);
+  return id;
+}
+
+route('GET', '/cart', ({ query }) => [200, cartView(cartUserId(query))]);
+
+route('POST', '/cart', ({ body }) => {
+  const d = validate(cartFields, body, false);
+  const same = carts.items.find((c) => c.userId === d.userId && c.productId === d.productId && c.size === d.size);
+  if (same) {
+    if (same.quantity + d.quantity > 99) throw new HttpError(400, 'quantity cannot exceed 99');
+    const { id, createdAt, updatedAt, ...rest } = same;
+    carts.replace(id, { ...rest, quantity: same.quantity + d.quantity });
+    return [200, cartView(d.userId)];
+  }
+  carts.insert(d);
+  return [201, cartView(d.userId)];
+});
+
+route('PATCH', '/cart/:id', ({ params, body }) => {
+  const line = carts.find(parseId(params.id));
+  if (!line) throw new HttpError(404, 'cart item not found');
+  const d = validate({ quantity: cartFields.quantity, size: cartFields.size }, body, true);
+  const next = { ...line, ...d };
+  const twin = carts.items.find(
+    (c) => c.id !== line.id && c.userId === next.userId && c.productId === next.productId && c.size === next.size
+  );
+  if (twin) {
+
+    if (twin.quantity + next.quantity > 99) throw new HttpError(400, 'quantity cannot exceed 99');
+    const { id, createdAt, updatedAt, ...rest } = twin;
+    carts.replace(id, { ...rest, quantity: twin.quantity + next.quantity });
+    carts.remove(line.id);
+  } else {
+    const { id, createdAt, updatedAt, ...rest } = next;
+    carts.replace(id, rest);
+  }
+  return [200, cartView(line.userId)];
+});
+
+route('DELETE', '/cart/:id', ({ params }) => {
+  const line = carts.find(parseId(params.id));
+  if (!line) throw new HttpError(404, 'cart item not found');
+  carts.remove(line.id);
+  return [200, cartView(line.userId)];
+});
+
+route('DELETE', '/cart', ({ query }) => {
+  const userId = cartUserId(query);
+  carts.removeWhere((c) => c.userId === userId);
+  return [200, cartView(userId)];
+});
+
+const PAYMENTS = ['Cash on Delivery', 'Credit / Debit Card', 'Bank Transfer'];
+const STATUSES = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+const shippingFields = {
+  firstName: str(true),
+  lastName: str(true),
+  email: email(true),
+  address: str(true),
+  city: str(true),
+  postalCode: str(true),
+  paymentMethod: oneOf(true, PAYMENTS, 'Cash on Delivery'),
+};
+
+route('POST', '/orders', ({ body }) => {
+  const d = validate({ userId: ref(true, 'users'), ...shippingFields }, body, false);
+  const lines = cartView(d.userId).items;
+  if (!lines.length) throw new HttpError(400, 'Cart is empty');
+  const items = lines.map(({ productId, name, price, size, quantity, lineTotal }) => ({
+    productId, name, price, size, quantity, lineTotal,
+  }));
+  const order = orders.insert({ ...d, items, ...totals(lines), status: 'pending' });
+  carts.removeWhere((c) => c.userId === d.userId);
+  return [201, order];
+});
+
+route('GET', '/orders', ({ query }) => {
+  let list = orders.items;
+  for (const f of ['userId', 'status']) {
+    const q = query.get(f);
+    if (q !== null) list = list.filter((o) => String(o[f]) === q);
+  }
+  return [200, list];
+});
+
+const orderOr404 = (rawId) => {
+  const order = orders.find(parseId(rawId));
+  if (!order) throw new HttpError(404, 'order not found');
+  return order;
+};
+route('GET', '/orders/:id', ({ params }) => [200, orderOr404(params.id)]);
+route('PATCH', '/orders/:id', ({ params, body }) => {
+  const order = orderOr404(params.id);
+  const d = validate({ ...shippingFields, status: oneOf(false, STATUSES) }, body, true);
+  const { id, createdAt, updatedAt, ...rest } = order;
+  return [200, orders.replace(id, { ...rest, ...d })];
+});
+route('DELETE', '/orders/:id', ({ params }) => {
+  const order = orderOr404(params.id);
+  orders.remove(order.id);
+  return [200, { deleted: order }];
+});
+
+const server = http.createServer(async (req, res) => {
+  const send = (status, body) => {
+    res.writeHead(status, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    });
+    res.end(JSON.stringify(body));
+  };
+
+  try {
+    if (req.method === 'OPTIONS') return send(204, {});
+    const url = new URL(req.url, 'http://localhost');
+
+    if (url.pathname === '/') {
+      return send(200, {
+        message: 'SoleStep API',
+        endpoints: ['/products', '/reviews', '/signup', '/login', '/users', '/cart', '/orders'],
+      });
+    }
+
+    let pathMatched = false;
+    for (const r of routes) {
+      const m = r.re.exec(url.pathname);
+      if (!m) continue;
+      pathMatched = true;
+      if (r.method !== req.method) continue;
+      const params = {};
+      r.keys.forEach((k, i) => (params[k] = decodeURIComponent(m[i + 1])));
+      const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? await readJson(req) : undefined;
+      const [status, payload] = await r.handler({ params, query: url.searchParams, body });
+      return send(status, payload);
+    }
+    throw new HttpError(pathMatched ? 405 : 404, pathMatched ? 'Method not allowed' : 'Not found');
+  } catch (error) {
+    if (error instanceof HttpError) return send(error.status, { error: error.message });
+    console.error(error);
+    send(500, { error: 'Server error' });
+  }
+});
+
+const PORT = process.env.PORT || 3005;
+server.listen(PORT, () => {
+  console.log(`SoleStep API: http://localhost:${PORT}`);
+  console.log(`Data files in: ${DATA_DIR}`);
+});
