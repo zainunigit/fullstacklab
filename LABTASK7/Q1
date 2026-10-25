@@ -1,0 +1,232 @@
+const http = require('node:http');
+
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
+
+// ---------- In-memory data ----------
+const db = {
+  students: { items: [], nextId: 1 },
+  teachers: { items: [], nextId: 1 },
+  attendance: { items: [], nextId: 1 },
+  marks: { items: [], nextId: 1 },
+};
+
+// ---------- Field validators ----------
+const str = (required = false) => ({
+  required,
+  parse(v) {
+    if (typeof v !== 'string' || !v.trim()) throw 'must be a non-empty string';
+    return v.trim();
+  },
+});
+
+const num = (required, min, max, integer = false) => ({
+  required,
+  parse(v) {
+    if (typeof v !== 'number' || !Number.isFinite(v)) throw 'must be a number';
+    if (integer && !Number.isInteger(v)) throw 'must be an integer';
+    if (v < min || v > max) throw `must be between ${min} and ${max}`;
+    return v;
+  },
+});
+
+const ref = (required, collection) => ({
+  required,
+  parse(v) {
+    if (!Number.isInteger(v)) throw 'must be an integer id';
+    if (!db[collection].items.some((x) => x.id === v)) throw `no ${collection.slice(0, -1)} with id ${v}`;
+    return v;
+  },
+});
+
+const date = (required) => ({
+  required,
+  parse(v) {
+    if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) throw 'must be YYYY-MM-DD';
+    const d = new Date(`${v}T00:00:00Z`);
+    if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== v) throw 'is not a valid date';
+    return v;
+  },
+});
+
+const oneOf = (required, values) => ({
+  required,
+  parse(v) {
+    if (!values.includes(v)) throw `must be one of: ${values.join(', ')}`;
+    return v;
+  },
+});
+
+// ---------- Resource definitions ----------
+const resources = {
+  students: {
+    fields: {
+      name: str(true),
+      email: str(),
+      age: num(false, 1, 120, true),
+      className: str(),
+    },
+    filters: ['className'],
+  },
+  teachers: {
+    fields: {
+      name: str(true),
+      subject: str(true),
+      email: str(),
+    },
+    filters: ['subject'],
+  },
+  attendance: {
+    fields: {
+      studentId: ref(true, 'students'),
+      date: date(true),
+      status: oneOf(true, ['present', 'absent', 'late']),
+    },
+    filters: ['studentId', 'date', 'status'],
+    // One attendance record per student per day
+    check(record, selfId) {
+      const dup = db.attendance.items.find(
+        (a) => a.id !== selfId && a.studentId === record.studentId && a.date === record.date
+      );
+      if (dup) throw new HttpError(409, `Attendance already recorded for this student on ${record.date} (id ${dup.id})`);
+    },
+  },
+  marks: {
+    fields: {
+      studentId: ref(true, 'students'),
+      teacherId: ref(false, 'teachers'),
+      subject: str(true),
+      score: num(true, 0, 100),
+    },
+    filters: ['studentId', 'teacherId', 'subject'],
+  },
+};
+
+// ---------- Helpers ----------
+function validate(def, body, partial) {
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) {
+    throw new HttpError(400, 'Body must be a JSON object');
+  }
+  const errors = [];
+  const data = {};
+  for (const [key, rule] of Object.entries(def.fields)) {
+    const value = body[key];
+    if (value === undefined) {
+      if (rule.required && !partial) errors.push(`${key} is required`);
+      continue;
+    }
+    try {
+      data[key] = rule.parse(value);
+    } catch (msg) {
+      if (typeof msg !== 'string') throw msg;
+      errors.push(`${key} ${msg}`);
+    }
+  }
+  if (errors.length) throw new HttpError(400, errors.join('; '));
+  return data;
+}
+
+async function readJson(req) {
+  let raw = '';
+  for await (const chunk of req) {
+    raw += chunk;
+    if (Buffer.byteLength(raw) > 65536) throw new HttpError(413, 'Too large');
+  }
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new HttpError(400, 'Invalid JSON');
+  }
+}
+
+// Remove records that depend on a deleted student/teacher
+function cascadeDelete(resource, id) {
+  if (resource === 'students') {
+    db.attendance.items = db.attendance.items.filter((a) => a.studentId !== id);
+    db.marks.items = db.marks.items.filter((m) => m.studentId !== id);
+  }
+  if (resource === 'teachers') {
+    for (const m of db.marks.items) if (m.teacherId === id) delete m.teacherId;
+  }
+}
+
+// ---------- Server ----------
+const server = http.createServer(async (req, res) => {
+  const send = (status, body) => {
+    res.writeHead(status, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(body));
+  };
+
+  try {
+    const url = new URL(req.url, 'http://localhost');
+    const [name, idPart, ...extra] = url.pathname.split('/').filter(Boolean);
+
+    if (!name) {
+      return send(200, { message: 'Student Management API', resources: Object.keys(resources) });
+    }
+
+    const def = resources[name];
+    if (!def || extra.length) throw new HttpError(404, 'Not found');
+    const store = db[name];
+
+    // Collection routes: /<resource>
+    if (idPart === undefined) {
+      if (req.method === 'GET') {
+        let list = store.items;
+        for (const f of def.filters) {
+          const q = url.searchParams.get(f);
+          if (q !== null) list = list.filter((item) => String(item[f]) === q);
+        }
+        return send(200, list);
+      }
+      if (req.method === 'POST') {
+        const data = validate(def, await readJson(req), false);
+        if (def.check) def.check(data, null);
+        const record = { id: store.nextId++, ...data };
+        store.items.push(record);
+        return send(201, record);
+      }
+      throw new HttpError(405, 'Method not allowed');
+    }
+
+    // Item routes: /<resource>/:id
+    const id = Number(idPart);
+    if (!Number.isInteger(id)) throw new HttpError(400, 'id must be an integer');
+    const index = store.items.findIndex((x) => x.id === id);
+    if (index === -1) throw new HttpError(404, `${name.slice(0, -1)} ${id} not found`);
+    const current = store.items[index];
+
+    if (req.method === 'GET') return send(200, current);
+
+    if (req.method === 'PUT' || req.method === 'PATCH') {
+      const data = validate(def, await readJson(req), req.method === 'PATCH');
+      // PUT replaces the record: optional fields not supplied are cleared
+      const updated = req.method === 'PUT' ? { id, ...data } : { ...current, ...data };
+      if (def.check) def.check(updated, id);
+      store.items[index] = updated;
+      return send(200, updated);
+    }
+
+    if (req.method === 'DELETE') {
+      store.items.splice(index, 1);
+      cascadeDelete(name, id);
+      return send(200, { deleted: current });
+    }
+
+    throw new HttpError(405, 'Method not allowed');
+  } catch (error) {
+    if (error instanceof HttpError) return send(error.status, { error: error.message });
+    console.error(error);
+    send(500, { error: 'Server error' });
+  }
+});
+
+const PORT = process.env.PORT || 3004;
+server.listen(PORT, () => {
+  console.log(`Student Management API: http://localhost:${PORT}`);
+  console.log('Resources: /students /teachers /attendance /marks');
+});
