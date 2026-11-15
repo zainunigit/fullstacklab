@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoleStep THE Shoe Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary fs-3" href="#">SoleStep</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active text-primary" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Shoes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reviews">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#cart">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#checkout">Checkout</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex gap-2">
+                    <a href="#login" class="btn btn-outline-primary">Login</a>
+                    <a href="#signup" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="bg-white py-5">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="badge bg-primary-subtle text-primary mb-3">
+                        NEW COLLECTION 2026
+                    </span>
+
+                    <h1 class="display-4 fw-bold">
+                        Step Into Your
+                        <span class="text-primary">Style.</span>
+                    </h1>
+
+                    <p class="lead text-secondary">
+                        Discover comfortable, stylish and high-quality shoes
+                        designed for every step of your journey.
+                    </p>
+
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#products" class="btn btn-primary btn-lg px-4">
+                            Shop Now
+                        </a>
+                        <a href="#reviews" class="btn btn-outline-primary btn-lg px-4">
+                            Our Reviews
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="bg-primary-subtle rounded-4 p-5 text-center">
+                        <div class="display-1">👟</div>
+                        <h2 class="fw-bold text-primary mt-3">Walk With Confidence</h2>
+                        <p class="text-secondary mb-0">
+                            Premium footwear for everyday life.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="py-5">
+<div class="container">
+  <div class="text-center mb-4">
+    <span class="text-primary fw-bold">OUR COLLECTION</span>
+    <h2 class="fw-bold mt-2">Explore Our Shoes</h2>
+    <p class="text-secondary">Choose your next pair from the SoleStep collection.</p>
+  </div>
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-4 col-lg-3">
+      <label for="category-filter" class="form-label">Filter by category</label>
+      <select id="category-filter" class="form-select">
+        <option value="">All categories</option>
+        <option>Running</option><option>Outdoor</option><option>Formal</option>
+        <option>Casual</option><option>Sports</option><option>Boots</option>
+        <option>Lifestyle</option><option>Premium</option>
+      </select>
+    </div>
+  </div>
+  <div id="products-message" class="text-center text-secondary py-3">Loading products...</div>
+  <div class="row g-4" id="products-container"></div>
+</div>
+</section>
+
+    <section id="reviews" class="bg-white py-5">
+<div class="container">
+  <div class="text-center mb-5">
+    <span class="text-primary fw-bold">CUSTOMER FEEDBACK</span>
+    <h2 class="fw-bold mt-2">What Our Customers Say</h2>
+  </div>
+  <div id="reviews-message" class="text-center text-secondary mb-3">Loading reviews...</div>
+  <div class="row g-4" id="reviews-container"></div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h4 class="fw-bold mb-3">Write a Review</h4>
+          <form id="review-form">
+            <div class="mb-3">
+              <label class="form-label" for="review-name">Your name</label>
+              <input id="review-name" class="form-control" required maxlength="80">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="review-rating">Rating</label>
+              <select id="review-rating" class="form-select" required>
+                <option value="5">5 - Excellent</option><option value="4">4 - Very good</option>
+                <option value="3">3 - Good</option><option value="2">2 - Fair</option><option value="1">1 - Poor</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="review-comment">Your review</label>
+              <textarea id="review-comment" class="form-control" rows="3" required maxlength="500"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit Review</button>
+            <div id="review-form-message" class="small mt-3" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+    <section id="signup" class="py-5">
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            <h2 class="fw-bold">Create Your Account</h2>
+            <p class="text-secondary">Join SoleStep today.</p>
+          </div>
+          <form id="signup-form">
+            <div class="mb-3"><label class="form-label" for="signup-name">Full Name</label><input id="signup-name" class="form-control" required></div>
+            <div class="mb-3"><label class="form-label" for="signup-email">Email Address</label><input id="signup-email" type="email" class="form-control" required></div>
+            <div class="mb-3"><label class="form-label" for="signup-password">Password</label><input id="signup-password" type="password" class="form-control" required minlength="4"></div>
+            <div class="mb-3"><label class="form-label" for="signup-confirm">Confirm Password</label><input id="signup-confirm" type="password" class="form-control" required minlength="4"></div>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            <div id="signup-message" class="small mt-3" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+    <section id="login" class="bg-white py-5">
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4"><h2 class="fw-bold">Welcome Back</h2><p class="text-secondary">Login to your SoleStep account.</p></div>
+          <form id="login-form">
+            <div class="mb-3"><label class="form-label" for="login-email">Email Address</label><input id="login-email" type="email" class="form-control" required></div>
+            <div class="mb-3"><label class="form-label" for="login-password">Password</label><input id="login-password" type="password" class="form-control" required></div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <div id="login-message" class="small mt-3" aria-live="polite"></div>
+          </form>
+          <hr>
+          <div class="d-flex justify-content-between flex-wrap gap-2">
+            <button class="btn btn-link p-0 text-decoration-none" type="button" id="show-forgot">Forgot Password?</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" id="logout-button">Log Out</button>
+          </div>
+          <div id="forgot-panel" class="mt-3 d-none">
+            <form id="forgot-form">
+              <label for="forgot-email" class="form-label">Account email</label>
+              <input id="forgot-email" type="email" class="form-control mb-2" required>
+              <button class="btn btn-outline-primary btn-sm" type="submit">Request Password Recovery</button>
+            </form>
+            <div id="forgot-message" class="small mt-2" aria-live="polite"></div>
+            <div class="alert alert-info small mt-2 mb-0">Demo only: the backend does not send an email or create a reset token. Its reset endpoint also does not change a password.</div>
+            <form id="reset-form" class="mt-3">
+              <label for="reset-email" class="form-label">Reset endpoint demonstration</label>
+              <input id="reset-email" type="email" class="form-control mb-2" placeholder="Email (demo)" required>
+              <input id="reset-password" type="password" class="form-control mb-2" placeholder="New password (not saved)" required>
+              <button class="btn btn-outline-secondary btn-sm" type="submit">Call Reset Endpoint</button>
+            </form>
+            <div id="reset-message" class="small mt-2" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+    <section id="cart" class="py-5">
+<div class="container">
+  <div class="text-center mb-5"><span class="text-primary fw-bold">SHOPPING CART</span><h2 class="fw-bold mt-2">Your Cart</h2></div>
+  <div id="cart-message" class="text-center text-secondary mb-3" aria-live="polite"></div>
+  <div class="row g-4">
+    <div class="col-lg-8"><div id="cart-items"></div></div>
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm"><div class="card-body p-4">
+        <h4 class="fw-bold mb-4">Cart Summary</h4>
+        <div class="d-flex justify-content-between mb-3"><span>Subtotal</span><strong id="cart-subtotal">$0.00</strong></div>
+        <div class="d-flex justify-content-between mb-3"><span>Shipping</span><strong id="cart-shipping">$0.00</strong></div>
+        <hr><div class="d-flex justify-content-between mb-4"><strong>Total</strong><strong class="text-primary" id="cart-total">$0.00</strong></div>
+        <a href="#checkout" class="btn btn-primary w-100 mb-2">Proceed to Checkout</a>
+        <button id="clear-cart-button" class="btn btn-outline-danger w-100" type="button">Clear Cart</button>
+      </div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+    <section id="checkout" class="bg-white py-5">
+<div class="container">
+  <div class="text-center mb-5"><span class="text-primary fw-bold">CHECKOUT</span><h2 class="fw-bold mt-2">Complete Your Order</h2></div>
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm"><div class="card-body p-4">
+        <h4 class="fw-bold mb-4">Shipping Information</h4>
+        <form id="checkout-form">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label" for="checkout-first">First Name</label><input id="checkout-first" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label" for="checkout-last">Last Name</label><input id="checkout-last" class="form-control" required></div>
+            <div class="col-12"><label class="form-label" for="checkout-email">Email</label><input id="checkout-email" type="email" class="form-control" required></div>
+            <div class="col-12"><label class="form-label" for="checkout-address">Address</label><input id="checkout-address" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label" for="checkout-city">City</label><input id="checkout-city" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label" for="checkout-postal">Postal Code</label><input id="checkout-postal" class="form-control" required></div>
+            <div class="col-12"><label class="form-label" for="checkout-payment">Payment Method</label>
+              <select id="checkout-payment" class="form-select" required>
+                <option value="Cash on Delivery">Cash on Delivery</option><option value="Credit / Debit Card">Credit / Debit Card</option><option value="Bank Transfer">Bank Transfer</option>
+              </select>
+            </div>
+            <div class="col-12"><button type="submit" class="btn btn-primary btn-lg w-100">Place Order</button></div>
+          </div>
+          <div id="checkout-message" class="mt-3" aria-live="polite"></div>
+        </form>
+      </div></div>
+    </div>
+    <div class="col-lg-5"><div class="card border-0 shadow-sm"><div class="card-body p-4">
+      <h4 class="fw-bold mb-4">Order Summary</h4>
+      <div id="checkout-summary-items"></div><hr>
+      <div class="d-flex justify-content-between mb-2"><span>Subtotal</span><span id="checkout-subtotal">$0.00</span></div>
+      <div class="d-flex justify-content-between mb-2"><span>Shipping</span><span id="checkout-shipping">$0.00</span></div>
+      <div class="d-flex justify-content-between"><h5 class="fw-bold">Total</h5><h5 class="fw-bold text-primary" id="checkout-total">$0.00</h5></div>
+    </div></div></div>
+  </div>
+  <div id="order-confirmation" class="mt-4"></div>
+</div>
+</section>
+
+    <footer class="bg-primary text-white py-4">
+        <div class="container">
+            <div class="row align-items-center g-3">
+
+                <div class="col-md-6">
+                    <h5 class="fw-bold mb-1">SoleStep</h5>
+                    <p class="mb-0 text-white-50">
+                        Step into comfort. Step into style.
+                    </p>
+                </div>
+
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">
+                        © 2026 SoleStep. All rights reserved.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
